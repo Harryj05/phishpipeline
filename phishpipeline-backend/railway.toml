@@ -3,8 +3,13 @@ builder = "dockerfile"
 dockerfilePath = "Dockerfile"
 
 [deploy]
-startCommand = "uvicorn main:app --host 0.0.0.0 --port $PORT"
+# No startCommand here on purpose: Railway runs startCommand directly
+# (not through a shell), so "$PORT" would be passed to uvicorn as a
+# literal string instead of being expanded, causing
+# "Invalid value for '--port': '$PORT' is not a valid integer."
+# The Dockerfile's CMD uses shell form and expands ${PORT:-8000} correctly,
+# so we let Railway fall back to that instead.
 healthcheckPath = "/api/health"
-healthcheckTimeout = 30
+healthcheckTimeout = 120
 restartPolicyType = "on_failure"
 restartPolicyMaxRetries = 3
