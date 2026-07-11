@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="popup.css">
+  <title>PhishPipeline</title>
+</head>
+<body>
+  <div class="pp-popup">
+    <!-- Header -->
+    <div class="pp-header">
+      <div class="pp-logo">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+          <path d="M12 2L4 5V11C4 16.5 7.4 21.2 12 22C16.6 21.2 20 16.5 20 11V5L12 2Z" fill="#FFFFFF"/>
+          <path d="M9.5 12L11 13.5L14.5 10" stroke="#1F4E79" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <span class="pp-brand">PhishPipeline</span>
+      <div class="pp-conn-dot" id="connDot"></div>
+    </div>
+
+    <!-- Input section -->
+    <div class="pp-input-section">
+      <input type="text" id="urlInput" class="pp-url-input"
+             placeholder="https://..." />
+      <div class="pp-btn-row">
+        <button id="tabBtn" class="pp-btn pp-btn-secondary">
+          Check Current Tab
+        </button>
+        <button id="scanBtn" class="pp-btn pp-btn-primary">
+          Scan Now
+        </button>
+      </div>
+    </div>
+
+    <!-- Result section (hidden initially) -->
+    <div class="pp-result" id="result" style="display:none">
+      <!-- populated by popup.js -->
+    </div>
+
+    <!-- Deployed ML model attribution -->
+    <div class="pp-model-footer" id="modelInfo">Model: loading…</div>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>

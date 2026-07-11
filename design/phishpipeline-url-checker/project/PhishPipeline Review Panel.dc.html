@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  body{margin:0;background:#0F1A27;font-family:Inter,system-ui,sans-serif}
+  ::-webkit-scrollbar{width:8px}::-webkit-scrollbar-thumb{background:#2A4056;border-radius:4px}::-webkit-scrollbar-track{background:transparent}
+  input[type=range]{accent-color:#2E75B6}
+</style>
+</helmet>
+<div style="padding:26px;display:flex;gap:18px;height:600px;box-sizing:border-box;color:#fff;font-size:14px">
+
+  <div style="flex:0 0 65%;min-width:0;background:#1F4E79;border-radius:8px;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 12px 32px rgba(0,0,0,.35)">
+    <div style="flex:none;padding:18px 20px 0">
+      <div style="display:flex;align-items:center;gap:10px">
+        <div style="font-size:16px;font-weight:700;letter-spacing:-.01em">Flagged for Review</div>
+        <span style="font-size:12px;font-weight:700;background:#C00000;color:#fff;border-radius:20px;padding:2px 9px;min-width:14px;text-align:center">{{ pendingCount }}</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-top:14px;padding-bottom:14px;border-bottom:1px solid rgba(158,199,232,.12)">
+        <div style="display:flex;gap:6px">
+          <sc-for list="{{ sources }}" as="s" hint-placeholder-count="3">
+            <button onClick="{{ s.onClick }}" style="background:{{ s.bg }};border:1px solid {{ s.border }};color:{{ s.fg }};border-radius:20px;padding:5px 13px;font-size:11px;font-weight:700;font-family:inherit;letter-spacing:.03em;cursor:pointer">{{ s.label }}</button>
+          </sc-for>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px;min-width:150px">
+          <div style="display:flex;justify-content:space-between;font-size:10.5px;color:#94A3B8;font-weight:600"><span>Confidence</span><span style="color:#9EC7E8;font-variant-numeric:tabular-nums">&lt; {{ confLabel }}</span></div>
+          <input type="range" min="10" max="100" value="{{ confPct }}" onInput="{{ onConf }}" onChange="{{ onConf }}" style="width:100%;cursor:pointer" />
+        </div>
+        <div style="display:flex;align-items:center;gap:7px;background:#162233;border:1px solid #2A4056;border-radius:7px;padding:6px 11px;font-size:11.5px;color:#CBD5E1;cursor:pointer;font-weight:500">Last 7 days<span style="color:#6B7C8D;font-size:9px">▾</span></div>
+      </div>
+    </div>
+
+    <div style="flex:none;display:grid;grid-template-columns:1fr 96px 150px 74px 62px 150px;gap:12px;padding:9px 20px;font-size:10px;font-weight:700;color:#6B7C8D;text-transform:uppercase;letter-spacing:.05em">
+      <div>URL</div><div>Label</div><div>Confidence</div><div>Source</div><div>Age</div><div style="text-align:right">Verdict</div>
+    </div>
+
+    <div style="flex:1;min-height:0;position:relative">
+      <div style="position:absolute;inset:0;overflow-y:auto">
+        <sc-for list="{{ rows }}" as="r" hint-placeholder-count="8">
+          <div style="display:grid;grid-template-columns:1fr 96px 150px 74px 62px 150px;gap:12px;align-items:center;padding:11px 20px;background:{{ r.rowBg }};border-bottom:1px solid rgba(158,199,232,.05)">
+            <div style="font-size:12px;font-family:ui-monospace,Menlo,monospace;color:#9EC7E8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="{{ r.url }}">{{ r.urlShort }}</div>
+            <div><span style="display:inline-block;font-size:9.5px;font-weight:800;letter-spacing:.04em;padding:3px 8px;border-radius:4px;background:{{ r.labelBg }};color:{{ r.labelFg }}">{{ r.label }}</span></div>
+            <div style="display:flex;align-items:center;gap:8px">
+              <div style="flex:1;height:4px;background:#0F1A27;border-radius:2px;overflow:hidden"><div style="height:100%;width:{{ r.confPct }}%;background:{{ r.confColor }};border-radius:2px"></div></div>
+              <span style="font-size:11px;font-weight:600;color:#CBD5E1;font-variant-numeric:tabular-nums;width:30px;text-align:right">{{ r.confText }}</span>
+            </div>
+            <div><span style="display:inline-block;font-size:9.5px;font-weight:700;padding:2px 7px;border-radius:20px;background:rgba(46,117,182,.16);border:1px solid rgba(46,117,182,.4);color:#8FC0EC">{{ r.source }}</span></div>
+            <div style="font-size:11px;color:#94A3B8">{{ r.age }}</div>
+            <div style="display:flex;gap:6px;justify-content:flex-end">
+              <button onClick="{{ r.onTP }}" title="True Positive" style="height:28px;display:flex;align-items:center;gap:4px;background:rgba(192,0,0,.16);border:1px solid rgba(192,0,0,.5);color:#FF6B6B;border-radius:6px;padding:0 8px;font-size:10px;font-weight:700;font-family:inherit;cursor:pointer;letter-spacing:.02em" style-hover="background:#C00000;color:#fff">✓ TP</button>
+              <button onClick="{{ r.onFP }}" title="False Positive" style="height:28px;display:flex;align-items:center;gap:4px;background:rgba(0,100,0,.18);border:1px solid rgba(31,157,79,.5);color:#3FDC7F;border-radius:6px;padding:0 8px;font-size:10px;font-weight:700;font-family:inherit;cursor:pointer;letter-spacing:.02em" style-hover="background:#1F9D4F;color:#fff">✗ FP</button>
+            </div>
+          </div>
+        </sc-for>
+        <sc-if value="{{ isEmpty }}">
+          <div style="padding:50px 20px;text-align:center;color:#6B7C8D;font-size:13px">Queue cleared — no URLs match the current filters.</div>
+        </sc-if>
+      </div>
+      <div style="position:absolute;left:0;right:0;bottom:0;height:44px;pointer-events:none;background:linear-gradient(to top,#1F4E79,rgba(31,78,121,0))"></div>
+    </div>
+  </div>
+
+  <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:12px;overflow-y:auto">
+    <div style="font-size:16px;font-weight:700;padding:2px 2px 0">Review Stats</div>
+
+    <sc-for list="{{ stats }}" as="st" hint-placeholder-count="4">
+      <div style="background:#1F4E79;border-radius:8px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 8px 22px rgba(0,0,0,.28)">
+        <div><div style="font-size:24px;font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1">{{ st.value }}</div><div style="font-size:12px;color:#94A3B8;margin-top:5px">{{ st.label }}</div></div>
+        <div style="display:flex;align-items:center;gap:4px;font-size:12px;font-weight:700;color:{{ st.trendColor }}"><span>{{ st.arrow }}</span>{{ st.trend }}</div>
+      </div>
+    </sc-for>
+
+    <div style="background:#162233;border-left:3px solid #B45309;border-radius:8px;padding:15px 16px;display:flex;flex-direction:column;gap:11px">
+      <div style="font-size:13px;font-weight:700;color:#fff">Retraining Queue</div>
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <div style="display:flex;justify-content:space-between;font-size:11.5px;color:#CBD5E1;font-weight:500"><span>False Positives</span><span style="color:#F0A93B;font-variant-numeric:tabular-nums">{{ fpCount }} / 10</span></div>
+        <div style="height:8px;width:100%;background:#0F1A27;border-radius:4px;overflow:hidden"><div style="height:100%;width:{{ fpProgress }}%;background:#B45309;border-radius:4px;transition:width .3s"></div></div>
+      </div>
+      <sc-if value="{{ thresholdMet }}" hint-placeholder-val="{{ false }}">
+        <button onClick="{{ onTrigger }}" style="background:#B45309;border:none;color:#fff;border-radius:6px;padding:9px;font-size:12.5px;font-weight:700;font-family:inherit;cursor:pointer;letter-spacing:.02em" style-hover="background:#cf6410">{{ triggerLabel }}</button>
+      </sc-if>
+      <sc-if value="{{ thresholdNotMet }}">
+        <div style="font-size:10.5px;color:#94A3B8;line-height:1.4">Retraining will trigger automatically at 10 FPs</div>
+      </sc-if>
+    </div>
+
+    <div style="font-size:11px;color:#94A3B8;padding:2px 4px 10px;display:flex;align-items:center;gap:6px">Last retrained: <b style="color:#CBD5E1;font-weight:600">v3</b> — deployed 3 days ago</div>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = {
+    source: 'ALL', confPct: 70,
+    reviewed: 1284, tp: 0, fp: 7, retrained: false,
+    queue: [
+      { id: 1, url: 'paypal-secure-login.xyz/account/verify', conf: 0.91, label: 'PHISHING', source: 'CT LOG', age: '2m ago' },
+      { id: 2, url: 'apple-id-verify.online/signin?redirect=account', conf: 0.66, label: 'UNCERTAIN', source: 'USER', age: '14m ago' },
+      { id: 3, url: 'netflix-billing-update.live/renew/payment', conf: 0.83, label: 'PHISHING', source: 'CT LOG', age: '38m ago' },
+      { id: 4, url: 'dropbox-shared-doc.click/file/preview', conf: 0.52, label: 'UNCERTAIN', source: 'USER', age: '1h ago' },
+      { id: 5, url: 'amazon-account-suspended.top/restore', conf: 0.88, label: 'PHISHING', source: 'CT LOG', age: '2h ago' },
+      { id: 6, url: 'chase-online-alert.info/secure/login', conf: 0.61, label: 'UNCERTAIN', source: 'USER', age: '3h ago' },
+      { id: 7, url: 'coinbase-wallet-verify.app/unlock', conf: 0.79, label: 'PHISHING', source: 'CT LOG', age: '5h ago' },
+      { id: 8, url: 'dhl-parcel-tracking.click/redelivery-fee', conf: 0.44, label: 'UNCERTAIN', source: 'USER', age: '6h ago' },
+      { id: 9, url: 'wellsfargo-secure.cc/account/confirm', conf: 0.68, label: 'UNCERTAIN', source: 'CT LOG', age: '8h ago' },
+      { id: 10, url: 'meta-business-suspended.site/appeal', conf: 0.86, label: 'PHISHING', source: 'USER', age: '11h ago' },
+    ],
+  };
+
+  setSource(s) { this.setState({ source: s }); }
+  onConf = (e) => this.setState({ confPct: parseInt(e.target.value, 10) || 0 });
+
+  resolve(id, verdict) {
+    this.setState((s) => {
+      const row = s.queue.find((r) => r.id === id);
+      if (!row) return {};
+      return {
+        queue: s.queue.filter((r) => r.id !== id),
+        reviewed: s.reviewed + 1,
+        tp: verdict === 'tp' ? s.tp + 1 : s.tp,
+        fp: verdict === 'fp' ? s.fp + 1 : s.fp,
+      };
+    });
+  }
+  triggerRetraining = () => this.setState((s) => ({ retrained: true, fp: 0 }));
+
+  shortUrl(u) { return u.length > 35 ? u.slice(0, 34) + '…' : u; }
+  srcMatch(row) {
+    if (this.state.source === 'ALL') return true;
+    if (this.state.source === 'USER') return row.source === 'USER';
+    return row.source === 'CT LOG';
+  }
+  visible() { return this.state.queue.filter((r) => this.srcMatch(r) && r.conf <= this.state.confPct / 100); }
+
+  confColor(c) { return c > 0.7 ? '#C00000' : (c >= 0.4 ? '#B45309' : '#2E75B6'); }
+
+  renderVals() {
+    const s = this.state;
+    const vis = this.visible();
+    const rowBg = (i) => (i % 2 === 0 ? '#162233' : '#1A2940');
+    const fpProgress = Math.min(100, (s.fp / 10) * 100);
+    const met = s.fp >= 10;
+    const sources = ['ALL', 'USER', 'CERTSTREAM'].map((label) => {
+      const active = s.source === label;
+      return { label, onClick: () => this.setSource(label),
+        bg: active ? '#2E75B6' : 'transparent', border: active ? '#2E75B6' : '#4E7BA6',
+        fg: active ? '#fff' : '#9EC7E8' };
+    });
+    const stats = [
+      { value: s.reviewed.toLocaleString(), label: 'Total Reviewed', arrow: '▲', trend: '+12%', trendColor: '#3FDC7F' },
+      { value: s.tp, label: 'True Positives', arrow: '▲', trend: 'today', trendColor: '#FF6B6B' },
+      { value: s.fp, label: 'False Positives', arrow: '▲', trend: 'today', trendColor: '#F0A93B' },
+      { value: (s.reviewed ? ((s.fp / (s.reviewed + s.fp)) * 100).toFixed(1) : '0.0') + '%', label: 'FP Rate', arrow: '▼', trend: '-0.4%', trendColor: '#3FDC7F' },
+    ];
+    return {
+      pendingCount: vis.length, isEmpty: vis.length === 0,
+      sources, confPct: s.confPct, confLabel: (s.confPct / 100).toFixed(2),
+      onConf: this.onConf,
+      rows: vis.map((r, i) => ({
+        url: r.url, urlShort: this.shortUrl(r.url), label: r.label,
+        labelBg: r.label === 'PHISHING' ? 'rgba(192,0,0,.2)' : 'rgba(180,83,9,.22)',
+        labelFg: r.label === 'PHISHING' ? '#FF6B6B' : '#F0A93B',
+        confPct: Math.round(r.conf * 100), confText: '.' + Math.round(r.conf * 100),
+        confColor: this.confColor(r.conf), source: r.source, age: r.age, rowBg: rowBg(i),
+        onTP: () => this.resolve(r.id, 'tp'), onFP: () => this.resolve(r.id, 'fp'),
+      })),
+      stats, fpCount: s.fp, fpProgress, thresholdMet: met, thresholdNotMet: !met,
+      triggerLabel: s.retrained ? 'Retraining Triggered ✓' : 'Trigger Retraining',
+      onTrigger: this.triggerRetraining,
+    };
+  }
+}
+</script>
+</body>
+</html>

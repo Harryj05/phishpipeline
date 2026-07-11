@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+*.egg-info/
+
+# Node
+node_modules/
+phishpipeline-dashboard/dist/
+
+# Local databases
+*.db
+
+# Local env files (set real values in Railway/Vercel dashboards)
+.env
+.env.local
+
+# Trained model artifacts (too large for git)
+phishpipeline-backend/models/versions/
+
+# Extension build output
+phishpipeline-extension/dist/
+phishpipeline-extension/phishpipeline-extension.zip
+
+# Third-party reference clone (not part of this project)
+phishml/
+
+# Local documents / reference material
+*.pdf
+*.docx
+*.pptx
+
+# Editor/OS noise
+.DS_Store
+Thumbs.db

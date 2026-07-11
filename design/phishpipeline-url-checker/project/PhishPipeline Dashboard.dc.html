@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  html,body{margin:0;height:100%;background:#0F1A27;font-family:Inter,system-ui,sans-serif;overflow:hidden}
+  .pp-in::placeholder{color:#5F7B92;opacity:1}
+  ::-webkit-scrollbar{width:8px;height:8px}
+  ::-webkit-scrollbar-thumb{background:#2A4056;border-radius:4px}
+  ::-webkit-scrollbar-track{background:transparent}
+  @keyframes pp-pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
+  @keyframes pp-flash{0%{background:rgba(46,117,182,.55)}100%{background:transparent}}
+  @keyframes pp-dot{0%,80%,100%{opacity:.25}40%{opacity:1}}
+</style>
+</helmet>
+<div style="height:100vh;width:100%;box-sizing:border-box;display:flex;flex-direction:column;color:#fff;background:#0F1A27">
+
+  <div style="height:64px;flex:none;display:flex;align-items:center;gap:0;padding:0 22px;background:#0F1A27;border-bottom:1px solid rgba(158,199,232,.12)">
+    <div style="display:flex;align-items:center;gap:9px;padding-right:26px;margin-right:8px;border-right:1px solid rgba(158,199,232,.12);height:34px">
+      <div style="width:28px;height:28px;border-radius:8px;background:linear-gradient(150deg,#3B86C9,#12314c);display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(46,117,182,.4),inset 0 1px 0 rgba(255,255,255,.16)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9.1" stroke="#CFE4F6" stroke-width="1.3" stroke-dasharray="43 12" stroke-linecap="round" transform="rotate(-58 12 12)"></circle><path d="M9 7 H12.2 A3.1 3.1 0 0 1 12.2 13.2 H9" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"></path><path d="M9 7 V16.1 C9 18.1 10.9 18.7 12 17.3" stroke="#fff" stroke-width="1.9" stroke-linecap="round"></path><circle cx="10.6" cy="10.1" r="1.4" fill="#5FE39B"></circle></svg></div>
+      <div style="font-size:15px;font-weight:700;letter-spacing:-.02em">PhishPipeline</div>
+    </div>
+    <div style="display:flex;flex:1;gap:0">
+      <div style="flex:1;display:flex;flex-direction:column;justify-content:center;padding-left:6px">
+        <div style="display:flex;align-items:baseline;gap:8px"><span style="font-size:24px;font-weight:800;letter-spacing:-.02em">{{ scannedFmt }}</span><span style="font-size:11px;color:#9EC7E8">last 10 min</span></div>
+        <div style="font-size:10.5px;color:#6B7C8D;text-transform:uppercase;letter-spacing:.06em;font-weight:600">Domains Scanned</div>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;justify-content:center;border-left:1px solid rgba(158,199,232,.1);padding-left:20px">
+        <div style="font-size:24px;font-weight:800;color:#FF5A5A;letter-spacing:-.02em">{{ phishing }}</div>
+        <div style="font-size:10.5px;color:#6B7C8D;text-transform:uppercase;letter-spacing:.06em;font-weight:600">Phishing Detected</div>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;justify-content:center;border-left:1px solid rgba(158,199,232,.1);padding-left:20px">
+        <div style="font-size:24px;font-weight:800;color:#F0A93B;letter-spacing:-.02em">{{ queued }}</div>
+        <div style="font-size:10.5px;color:#6B7C8D;text-transform:uppercase;letter-spacing:.06em;font-weight:600">Queued for Review</div>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;justify-content:center;border-left:1px solid rgba(158,199,232,.1);padding-left:20px">
+        <div style="font-size:24px;font-weight:800;color:#34C77B;letter-spacing:-.02em">{{ cleanFmt }}</div>
+        <div style="font-size:10.5px;color:#6B7C8D;text-transform:uppercase;letter-spacing:.06em;font-weight:600">Clean</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="flex:1;min-height:0;display:flex;gap:16px;padding:16px 22px 20px">
+
+    <div style="flex:0 0 64%;min-width:0;background:#1F4E79;border-radius:12px;display:flex;flex-direction:column;overflow:hidden;border:1px solid rgba(158,199,232,.08)">
+      <div style="flex:none;display:flex;align-items:center;justify-content:space-between;padding:15px 18px 13px">
+        <div style="font-size:15px;font-weight:700;letter-spacing:-.01em">Live Certstream Feed</div>
+        <div style="display:flex;align-items:center;gap:6px;font-size:11px;font-weight:600;color:#34C77B"><span style="width:7px;height:7px;border-radius:50%;background:#34C77B;box-shadow:0 0 7px #34C77B;animation:pp-pulse 1.6s ease-in-out infinite"></span>Streaming</div>
+      </div>
+      <div style="flex:none;display:grid;grid-template-columns:78px 1fr 118px 118px 66px;gap:12px;padding:0 18px 9px;font-size:10.5px;font-weight:600;color:#6B7C8D;text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid rgba(158,199,232,.1)">
+        <div>Time</div><div>Domain</div><div>Suspicion</div><div>Status</div><div style="text-align:right">Action</div>
+      </div>
+      <div style="flex:1;min-height:0;overflow-y:auto">
+        <sc-for list="{{ rows }}" as="r" hint-placeholder-count="9">
+          <div style="display:grid;grid-template-columns:78px 1fr 118px 118px 66px;gap:12px;align-items:center;padding:10px 18px;border-bottom:1px solid rgba(158,199,232,.05);background:{{ r.rowBg }};animation:{{ r.flash }}">
+            <div style="font-size:12px;color:#9EC7E8;font-variant-numeric:tabular-nums">{{ r.time }}</div>
+            <div style="font-size:12.5px;font-weight:500;color:#EAF2FA;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="{{ r.domain }}">{{ r.domain }}</div>
+            <div>
+              <span style="display:inline-flex;align-items:center;gap:6px;font-size:10.5px;font-weight:700;padding:3px 9px;border-radius:20px;background:{{ r.pillBg }};color:{{ r.pillFg }};letter-spacing:.03em"><b style="font-weight:800">{{ r.score }}</b>{{ r.tier }}</span>
+            </div>
+            <div>
+              <sc-if value="{{ r.isClassifying }}">
+                <span style="display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;background:rgba(122,135,148,.18);color:#AFC0CF">Classifying<span style="display:inline-flex;gap:2px"><span style="width:3px;height:3px;border-radius:50%;background:#AFC0CF;animation:pp-dot 1.2s infinite"></span><span style="width:3px;height:3px;border-radius:50%;background:#AFC0CF;animation:pp-dot 1.2s .2s infinite"></span><span style="width:3px;height:3px;border-radius:50%;background:#AFC0CF;animation:pp-dot 1.2s .4s infinite"></span></span></span>
+              </sc-if>
+              <sc-if value="{{ r.isResolved }}">
+                <span style="display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;padding:3px 11px;border-radius:20px;background:{{ r.statusBg }};color:{{ r.statusFg }}"><span style="width:6px;height:6px;border-radius:50%;background:{{ r.statusFg }}"></span>{{ r.statusLabel }}</span>
+              </sc-if>
+            </div>
+            <div style="text-align:right">
+              <button style="background:rgba(46,117,182,.18);border:1px solid rgba(46,117,182,.5);color:#8FC0EC;border-radius:6px;padding:4px 10px;font-size:11px;font-weight:600;font-family:inherit;cursor:pointer" style-hover="background:#2E75B6;color:#fff">View</button>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+
+    <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:16px">
+
+      <div style="flex:none;background:#1F4E79;border-radius:12px;padding:16px;border:1px solid rgba(158,199,232,.08)">
+        <div style="font-size:14px;font-weight:700;margin-bottom:12px">Check a URL</div>
+        <div style="display:flex;gap:8px;margin-bottom:14px">
+          <input class="pp-in" type="text" value="{{ checkUrl }}" onChange="{{ onCheckInput }}" placeholder="Enter URL…" style="flex:1;min-width:0;box-sizing:border-box;background:#162233;border:1px solid #2A4056;border-radius:8px;padding:9px 11px;color:#fff;font-size:12.5px;font-family:inherit;outline:none" />
+          <button style="flex:none;background:#C00000;border:none;color:#fff;border-radius:8px;padding:9px 15px;font-size:12.5px;font-weight:700;font-family:inherit;cursor:pointer;box-shadow:0 2px 10px rgba(192,0,0,.35)" style-hover="background:#d21212">Check Now</button>
+        </div>
+        <div style="border-left:4px solid #C00000;background:#FEF2F2;border-radius:8px;padding:12px 13px;display:flex;flex-direction:column;gap:9px">
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <div style="color:#C00000;font-weight:700;font-size:14px">⚠ Phishing Detected</div>
+            <div style="font-size:10px;color:#94908F;font-family:ui-monospace,Menlo,monospace">Stage 1 · 0.3s</div>
+          </div>
+          <div style="font-size:11.5px;color:#7A2B2B;word-break:break-all;font-family:ui-monospace,Menlo,monospace">apple-id-verify.online/login</div>
+          <div style="display:flex;flex-direction:column;gap:5px">
+            <div style="display:flex;justify-content:space-between;font-size:11px;color:#8A2B2B;font-weight:500"><span>Confidence</span><span>94%</span></div>
+            <div style="height:6px;width:100%;background:#F4D4D4;border-radius:3px;overflow:hidden"><div style="height:100%;width:94%;background:#C00000;border-radius:3px"></div></div>
+          </div>
+          <div style="font-size:11px;color:#94908F">Attack type: Credential Harvesting</div>
+        </div>
+      </div>
+
+      <div style="flex:1;min-height:0;background:#1F4E79;border-radius:12px;padding:16px;border:1px solid rgba(158,199,232,.08);display:flex;flex-direction:column">
+        <div style="font-size:14px;font-weight:700;margin-bottom:14px">Filter Controls</div>
+
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:9px 0" onClick="{{ toggPhishing }}" style-hover="opacity:.85">
+          <span style="font-size:12.5px;color:#DCE8F2;cursor:pointer">Show Phishing Only</span>
+          <span style="width:38px;height:21px;border-radius:20px;background:{{ swPhishBg }};position:relative;transition:background .18s;flex:none;cursor:pointer"><span style="position:absolute;top:2px;left:2px;width:17px;height:17px;border-radius:50%;background:#fff;transition:transform .18s;transform:{{ swPhishKnob }}"></span></span>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:9px 0" onClick="{{ toggHigh }}" style-hover="opacity:.85">
+          <span style="font-size:12.5px;color:#DCE8F2;cursor:pointer">High Score Only <span style="color:#6B7C8D">(≥70)</span></span>
+          <span style="width:38px;height:21px;border-radius:20px;background:{{ swHighBg }};position:relative;transition:background .18s;flex:none;cursor:pointer"><span style="position:absolute;top:2px;left:2px;width:17px;height:17px;border-radius:50%;background:#fff;transition:transform .18s;transform:{{ swHighKnob }}"></span></span>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid rgba(158,199,232,.1);margin-bottom:6px" onClick="{{ toggWild }}" style-hover="opacity:.85">
+          <span style="font-size:12.5px;color:#DCE8F2;cursor:pointer">Hide Wildcards</span>
+          <span style="width:38px;height:21px;border-radius:20px;background:{{ swWildBg }};position:relative;transition:background .18s;flex:none;cursor:pointer"><span style="position:absolute;top:2px;left:2px;width:17px;height:17px;border-radius:50%;background:#fff;transition:transform .18s;transform:{{ swWildKnob }}"></span></span>
+        </div>
+
+        <div style="padding:12px 0 4px">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:9px"><span style="font-size:12.5px;color:#DCE8F2">Score Threshold</span><span style="font-size:13px;font-weight:700;color:#8FC0EC;font-variant-numeric:tabular-nums">≥ {{ threshold }}</span></div>
+          <input type="range" min="0" max="100" value="{{ threshold }}" onChange="{{ onThreshold }}" onInput="{{ onThreshold }}" style="width:100%;accent-color:#2E75B6;cursor:pointer" />
+        </div>
+
+        <div style="margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:10px;padding-top:12px">
+          <span style="font-size:11px;color:#6B7C8D">{{ visCount }} of {{ totalCount }} shown</span>
+          <button onClick="{{ exportCsv }}" style="flex:none;background:transparent;border:1px solid #4E7BA6;color:#DCE8F2;border-radius:8px;padding:8px 15px;font-size:12px;font-weight:600;font-family:inherit;cursor:pointer" style-hover="background:rgba(78,123,166,.2)">Export CSV</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = {
+    all: [],
+    scanned: 12840,
+    phishing: 873,
+    queued: 6,
+    clean: 11961,
+    threshold: 0,
+    showPhishingOnly: false,
+    highScoreOnly: false,
+    hideWildcards: false,
+    checkUrl: 'apple-id-verify.online/login',
+  };
+
+  POOL = [
+    'paypal-secure-login.xyz','apple-id-verify.online','netflix-billing-update.live',
+    'amazon-account-suspended.top','chase-online-alert.info','microsoft365-login.support',
+    'coinbase-wallet-verify.app','wellsfargo-secure.cc','instagram-copyright-appeal.help',
+    'dhl-parcel-tracking.click','usps-redelivery-fee.win','meta-business-suspended.site',
+    'steam-community-gift.ru','bankofamerica-alert.zip','whatsapp-verify-code.mobi',
+    'google-security-alert.pro','*.paypal-verify.com','*.icloud-locate.net',
+    'linkedin-joboffer-secure.info','fedex-customs-hold.top','att-account-locked.live',
+    'binance-airdrop-claim.app','irs-tax-refund-2026.click','spotify-premium-renew.cc',
+    'docs.google.com','github.com','en.wikipedia.org','cloudflare.com',
+  ];
+
+  makeRow(fresh) {
+    const domain = this.POOL[Math.floor(Math.random() * this.POOL.length)];
+    const benign = /google\.com|github\.com|wikipedia\.org|cloudflare\.com/i.test(domain);
+    const score = benign
+      ? Math.floor(Math.random() * 34) + 8
+      : Math.floor(Math.random() * 62) + 38;
+    const now = new Date();
+    const time = now.toTimeString().slice(0, 8);
+    return { id: Date.now() + Math.random(), domain, score, time, status: 'classifying', fresh: !!fresh };
+  }
+
+  resolveStatus(score) {
+    if (score >= 75) return 'phishing';
+    if (score >= 50) return Math.random() < 0.55 ? 'phishing' : 'clean';
+    return 'clean';
+  }
+
+  componentDidMount() {
+    const seed = [];
+    for (let i = 0; i < 9; i++) {
+      const row = this.makeRow(false);
+      row.status = this.resolveStatus(row.score);
+      seed.push(row);
+    }
+    this.setState({ all: seed });
+    this._iv = setInterval(this.tick, 2000);
+  }
+  componentWillUnmount() { clearInterval(this._iv); clearTimeout(this._ft); }
+
+  tick = () => {
+    this.setState((s) => {
+      const rows = s.all.map((r) => ({ ...r, fresh: false }));
+      let { phishing, clean, queued } = s;
+      // resolve any lingering classifying rows
+      for (const r of rows) {
+        if (r.status === 'classifying') {
+          r.status = this.resolveStatus(r.score);
+          queued = Math.max(0, queued - 1);
+          if (r.status === 'phishing') phishing++; else clean++;
+        }
+      }
+      const fresh = this.makeRow(true);
+      rows.unshift(fresh);
+      queued++;
+      if (rows.length > 11) rows.pop();
+      return { all: rows, scanned: s.scanned + 1, phishing, clean, queued };
+    });
+    clearTimeout(this._ft);
+    this._ft = setTimeout(() => {
+      this.setState((s) => ({ all: s.all.map((r) => ({ ...r, fresh: false })) }));
+    }, 950);
+  };
+
+  toggle(key) { this.setState((s) => ({ [key]: !s[key] })); }
+  onThreshold = (e) => { const v = parseInt(e.target.value, 10) || 0; this.setState({ threshold: v }); };
+  onCheckInput = (e) => this.setState({ checkUrl: e.target.value });
+
+  filtered() {
+    return this.state.all.filter((r) => {
+      if (this.state.showPhishingOnly && r.status !== 'phishing') return false;
+      if (this.state.highScoreOnly && r.score < 70) return false;
+      if (this.state.hideWildcards && r.domain.startsWith('*.')) return false;
+      if (r.score < this.state.threshold) return false;
+      return true;
+    });
+  }
+
+  exportCsv = () => {
+    const rows = this.filtered();
+    const head = 'time,domain,score,status\n';
+    const body = rows.map((r) => `${r.time},${r.domain},${r.score},${r.status}`).join('\n');
+    const blob = new Blob([head + body], { type: 'text/csv' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'phishpipeline-feed.csv';
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  };
+
+  view(r, i) {
+    let tier, pillBg, pillFg;
+    if (r.score >= 80) { tier = 'HIGH'; pillBg = 'rgba(192,0,0,.22)'; pillFg = '#FF6B6B'; }
+    else if (r.score >= 50) { tier = 'MEDIUM'; pillBg = 'rgba(180,83,9,.24)'; pillFg = '#F0A93B'; }
+    else { tier = 'LOW'; pillBg = 'rgba(52,199,123,.18)'; pillFg = '#34C77B'; }
+    const resolved = r.status !== 'classifying';
+    let statusBg = 'transparent', statusFg = '#fff', statusLabel = '';
+    if (r.status === 'phishing') { statusBg = 'rgba(192,0,0,.22)'; statusFg = '#FF6B6B'; statusLabel = 'Phishing'; }
+    else if (r.status === 'clean') { statusBg = 'rgba(52,199,123,.18)'; statusFg = '#34C77B'; statusLabel = 'Clean'; }
+    return {
+      id: r.id, time: r.time, domain: r.domain, score: r.score, tier, pillBg, pillFg,
+      isClassifying: !resolved, isResolved: resolved, statusBg, statusFg, statusLabel,
+      rowBg: i % 2 === 0 ? '#162233' : '#1A2940',
+      flash: r.fresh ? 'pp-flash .95s ease-out' : 'none',
+    };
+  }
+
+  renderVals() {
+    const s = this.state;
+    const vis = this.filtered();
+    const on = '#2E75B6', off = '#33475C';
+    const knobOn = 'translateX(17px)', knobOff = 'translateX(0)';
+    return {
+      scannedFmt: s.scanned.toLocaleString(),
+      cleanFmt: s.clean.toLocaleString(),
+      phishing: s.phishing, queued: s.queued, threshold: s.threshold,
+      checkUrl: s.checkUrl,
+      rows: vis.map((r, i) => this.view(r, i)),
+      visCount: vis.length, totalCount: s.all.length,
+      swPhishBg: s.showPhishingOnly ? on : off, swPhishKnob: s.showPhishingOnly ? knobOn : knobOff,
+      swHighBg: s.highScoreOnly ? on : off, swHighKnob: s.highScoreOnly ? knobOn : knobOff,
+      swWildBg: s.hideWildcards ? on : off, swWildKnob: s.hideWildcards ? knobOn : knobOff,
+      toggPhishing: () => this.toggle('showPhishingOnly'),
+      toggHigh: () => this.toggle('highScoreOnly'),
+      toggWild: () => this.toggle('hideWildcards'),
+      onThreshold: this.onThreshold, onCheckInput: this.onCheckInput, exportCsv: this.exportCsv,
+    };
+  }
+}
+</script>
+</body>
+</html>

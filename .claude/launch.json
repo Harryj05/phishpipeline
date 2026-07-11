@@ -1,0 +1,32 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "phishpipeline-backend",
+      "runtimeExecutable": "cmd",
+      "runtimeArgs": [
+        "/c",
+        "cd phishpipeline-backend && set PHISHPIPELINE_SKIP_MODEL_PRELOAD=1 && .venv\\Scripts\\python.exe -m uvicorn main:app --host 127.0.0.1 --port 8000"
+      ],
+      "port": 8000
+    },
+    {
+      "name": "phishpipeline-extension-preview",
+      "runtimeExecutable": "cmd",
+      "runtimeArgs": [
+        "/c",
+        "cd phishpipeline-extension && python -m http.server 8787"
+      ],
+      "port": 8787
+    },
+    {
+      "name": "phishpipeline-dashboard",
+      "runtimeExecutable": "cmd",
+      "runtimeArgs": [
+        "/c",
+        "cd phishpipeline-dashboard && npm run dev -- --port 5173"
+      ],
+      "port": 5173
+    }
+  ]
+}

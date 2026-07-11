@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  body{margin:0;background:#0F1A27;font-family:Inter,system-ui,sans-serif}
+  ::-webkit-scrollbar{width:8px;height:8px}::-webkit-scrollbar-thumb{background:#2A4056;border-radius:4px}
+  @keyframes pp-spin{to{transform:rotate(360deg)}}
+</style>
+</helmet>
+<div style="padding:22px;color:#fff;font-size:14px;display:flex;flex-direction:column;gap:16px;box-sizing:border-box">
+
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px">
+    <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="4">
+      <div style="background:#1F4E79;border-radius:8px;padding:16px 17px;box-shadow:0 8px 22px rgba(0,0,0,.28);display:flex;flex-direction:column;gap:10px">
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          <span style="width:34px;height:34px;border-radius:8px;background:{{ k.iconBg }};color:{{ k.iconFg }};display:flex;align-items:center;justify-content:center">{{ k.icon }}</span>
+          <span style="font-size:11px;font-weight:700;color:{{ k.trendColor }}">{{ k.trend }}</span>
+        </div>
+        <div><div style="font-size:28px;font-weight:800;letter-spacing:-.02em;line-height:1">{{ k.value }}</div><div style="font-size:12px;color:#94A3B8;margin-top:5px">{{ k.label }}</div></div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="display:flex;gap:14px;align-items:stretch">
+    <div style="flex:0 0 55%;min-width:0;background:#1F4E79;border-radius:8px;padding:17px 18px;box-shadow:0 8px 22px rgba(0,0,0,.28)">
+      <div style="font-size:14px;font-weight:700;margin-bottom:14px">Time to Takedown by Attack Category</div>
+      <div style="background:#162233;border-radius:8px;padding:16px 16px 12px;position:relative">
+        <div style="position:absolute;left:130px;right:16px;top:16px;bottom:34px;display:flex;justify-content:space-between;pointer-events:none">
+          <div style="width:1px;background:#1F4E79"></div><div style="width:1px;background:#1F4E79"></div><div style="width:1px;background:#1F4E79"></div><div style="width:1px;background:#1F4E79"></div><div style="width:1px;background:#1F4E79"></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px;position:relative">
+          <sc-for list="{{ ttdBars }}" as="b" hint-placeholder-count="5">
+            <div style="display:flex;align-items:center;gap:10px">
+              <div style="width:120px;flex:none;font-size:11.5px;color:#CBD5E1;text-align:right">{{ b.label }}</div>
+              <div style="flex:1;height:18px;background:rgba(15,26,39,.5);border-radius:4px;overflow:hidden"><div style="height:100%;width:{{ b.pct }}%;background:{{ b.color }};border-radius:4px;display:flex;align-items:center;justify-content:flex-end;padding-right:7px;box-sizing:border-box"><span style="font-size:10.5px;font-weight:700;color:#fff">{{ b.hrs }}h</span></div></div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin:10px 0 0 130px;font-size:9.5px;color:#6B7C8D">
+          <span>0</span><span>3</span><span>6</span><span>9</span><span>12h</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="flex:1;min-width:0;background:#1F4E79;border-radius:8px;padding:17px 18px;box-shadow:0 8px 22px rgba(0,0,0,.28);display:flex;flex-direction:column">
+      <div style="font-size:14px;font-weight:700;margin-bottom:14px">Daily Reported vs Taken Down — Last 14 Days</div>
+      <div style="background:#162233;border-radius:8px;padding:14px 14px 10px;flex:1;display:flex;flex-direction:column">
+        <svg viewBox="0 0 420 210" style="width:100%;height:auto;display:block" preserveAspectRatio="none">
+          <line x1="34" y1="10" x2="420" y2="10" stroke="#1F4E79" stroke-width="1"></line>
+          <line x1="34" y1="55" x2="420" y2="55" stroke="#1F4E79" stroke-width="1"></line>
+          <line x1="34" y1="100" x2="420" y2="100" stroke="#1F4E79" stroke-width="1"></line>
+          <line x1="34" y1="145" x2="420" y2="145" stroke="#1F4E79" stroke-width="1"></line>
+          <line x1="34" y1="180" x2="420" y2="180" stroke="#2A4056" stroke-width="1"></line>
+          <text x="28" y="14" fill="#6B7C8D" font-size="9" text-anchor="end">20</text>
+          <text x="28" y="59" fill="#6B7C8D" font-size="9" text-anchor="end">15</text>
+          <text x="28" y="104" fill="#6B7C8D" font-size="9" text-anchor="end">10</text>
+          <text x="28" y="149" fill="#6B7C8D" font-size="9" text-anchor="end">5</text>
+          <text x="28" y="184" fill="#6B7C8D" font-size="9" text-anchor="end">0</text>
+          <path d="{{ areaReported }}" fill="#2E75B6" fill-opacity="0.2"></path>
+          <path d="{{ areaDown }}" fill="#1F9D4F" fill-opacity="0.2"></path>
+          <polyline points="{{ lineReported }}" fill="none" stroke="#2E75B6" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"></polyline>
+          <polyline points="{{ lineDown }}" fill="none" stroke="#1F9D4F" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"></polyline>
+          <g>{{ dotsSvg }}</g>
+          <g>{{ xLabelsSvg }}</g>
+        </svg>
+        <div style="display:flex;gap:20px;justify-content:center;margin-top:8px">
+          <span style="display:flex;align-items:center;gap:7px;font-size:11px;color:#CBD5E1"><span style="width:14px;height:3px;border-radius:2px;background:#2E75B6"></span>Reported</span>
+          <span style="display:flex;align-items:center;gap:7px;font-size:11px;color:#CBD5E1"><span style="width:14px;height:3px;border-radius:2px;background:#1F9D4F"></span>Taken Down</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="background:#1F4E79;border-radius:8px;box-shadow:0 8px 22px rgba(0,0,0,.28);overflow:hidden">
+    <div style="display:flex;align-items:center;gap:10px;padding:16px 18px 12px">
+      <div style="font-size:14px;font-weight:700">Active Tracking</div>
+      <span style="font-size:11px;font-weight:700;background:#2E75B6;color:#fff;border-radius:20px;padding:2px 9px">{{ trackCount }}</span>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 130px 110px 110px 116px 90px;gap:12px;padding:9px 18px;font-size:10px;font-weight:700;color:#6B7C8D;text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid rgba(158,199,232,.1)">
+      <div>URL</div><div>Category</div><div>Reported At</div><div>Last Checked</div><div>Status</div><div style="text-align:right">TTD</div>
+    </div>
+    <sc-for list="{{ tracking }}" as="t" hint-placeholder-count="5">
+      <div style="display:grid;grid-template-columns:1fr 130px 110px 110px 116px 90px;gap:12px;align-items:center;padding:11px 18px;background:{{ t.rowBg }};border-left:{{ t.leftBorder }};border-bottom:1px solid rgba(158,199,232,.05)">
+        <div style="font-size:12px;font-family:ui-monospace,Menlo,monospace;color:#9EC7E8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="{{ t.url }}">{{ t.urlShort }}</div>
+        <div style="font-size:11.5px;color:#CBD5E1">{{ t.category }}</div>
+        <div style="font-size:11.5px;color:#94A3B8">{{ t.reportedAt }}</div>
+        <div style="font-size:11.5px;color:#94A3B8">{{ t.lastChecked }}</div>
+        <div><span style="display:inline-block;font-size:9.5px;font-weight:800;letter-spacing:.04em;padding:3px 9px;border-radius:4px;background:{{ t.statusBg }};color:{{ t.statusFg }}">{{ t.status }}</span></div>
+        <div style="text-align:right;font-size:11.5px;font-weight:600;color:{{ t.ttdColor }}">
+          <sc-if value="{{ t.polling }}"><span style="display:inline-flex;align-items:center;gap:5px;justify-content:flex-end"><span style="width:11px;height:11px;border-radius:50%;border:2px solid rgba(46,117,182,.3);border-top-color:#8FC0EC;animation:pp-spin .8s linear infinite"></span>Polling</span></sc-if>
+          <sc-if value="{{ t.notPolling }}"><span>{{ t.ttd }}</span></sc-if>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    const kpis = [
+      { value: '142', label: 'Total Reported', trend: '↑ 12% this week', trendColor: '#8FC0EC', icon: '⚑', iconBg: 'rgba(46,117,182,.2)', iconFg: '#8FC0EC' },
+      { value: '89', label: 'Sites Taken Down', trend: '↑ 9% this week', trendColor: '#3FDC7F', icon: '🛡', iconBg: 'rgba(0,100,0,.22)', iconFg: '#3FDC7F' },
+      { value: '62.7%', label: 'Takedown Rate', trend: '↑ 4% this week', trendColor: '#F0A93B', icon: '%', iconBg: 'rgba(180,83,9,.2)', iconFg: '#F0A93B' },
+      { value: '4h 23m', label: 'Avg Time to Takedown', trend: '↓ 18m this week', trendColor: '#C79BEC', icon: '◷', iconBg: 'rgba(123,47,190,.24)', iconFg: '#C79BEC' },
+    ];
+
+    const maxH = 12;
+    const bars = [
+      { label: 'Regular', hrs: 3.2, color: '#1F9D4F' },
+      { label: 'JS Evasion', hrs: 8.7, color: '#B45309' },
+      { label: 'Clickjacking', hrs: 6.1, color: '#B45309' },
+      { label: 'DOM Cloaking', hrs: 11.4, color: '#C00000' },
+      { label: 'Text Encoding', hrs: 9.8, color: '#C00000' },
+    ].map((b) => ({ ...b, pct: Math.round((b.hrs / maxH) * 100) }));
+
+    // line chart geometry
+    const reported = [9, 11, 8, 13, 15, 12, 14, 17, 13, 16, 11, 15, 18, 14];
+    const down = [5, 7, 6, 8, 9, 7, 10, 11, 9, 12, 8, 11, 13, 10];
+    const x0 = 34, x1 = 415, yTop = 10, yBot = 180, ymax = 20;
+    const n = reported.length;
+    const px = (i) => x0 + (i * (x1 - x0)) / (n - 1);
+    const py = (v) => yBot - (v / ymax) * (yBot - yTop);
+    const pts = (arr) => arr.map((v, i) => `${px(i).toFixed(1)},${py(v).toFixed(1)}`).join(' ');
+    const area = (arr) => `M${px(0).toFixed(1)},${yBot} ` + arr.map((v, i) => `L${px(i).toFixed(1)},${py(v).toFixed(1)}`).join(' ') + ` L${px(n - 1).toFixed(1)},${yBot} Z`;
+
+    const R = React.createElement;
+    const dots = [];
+    reported.forEach((v, i) => dots.push(R('circle', { key: 'r' + i, cx: px(i), cy: py(v), r: 2.2, fill: '#2E75B6' })));
+    down.forEach((v, i) => dots.push(R('circle', { key: 'd' + i, cx: px(i), cy: py(v), r: 2.2, fill: '#1F9D4F' })));
+
+    const dateLabels = ['Jun 23', 'Jun 25', 'Jun 27', 'Jun 29', 'Jul 1', 'Jul 3', 'Jul 6'];
+    const xLabels = dateLabels.map((d, k) => {
+      const i = Math.round((k * (n - 1)) / (dateLabels.length - 1));
+      return R('text', { key: 'x' + k, x: px(i), y: 197, fill: '#6B7C8D', 'font-size': 9, 'text-anchor': 'middle' }, d);
+    });
+
+    const short = (u) => (u.length > 40 ? u.slice(0, 39) + '…' : u);
+    const sv = {
+      active: { status: 'ACTIVE', statusBg: 'rgba(46,117,182,.2)', statusFg: '#8FC0EC' },
+      down: { status: 'TAKEN DOWN', statusBg: 'rgba(0,100,0,.22)', statusFg: '#3FDC7F' },
+      error: { status: 'ERROR', statusBg: 'rgba(192,0,0,.2)', statusFg: '#FF6B6B' },
+    };
+    const rawTrack = [
+      { url: 'paypal-secure-login.xyz/account/verify/session', category: 'Credential', reportedAt: '4h ago', lastChecked: '2m ago', state: 'down', ttd: '4h 12m' },
+      { url: 'apple-id-verify.online/signin?redirect=account', category: 'JS Evasion', reportedAt: '6h ago', lastChecked: 'checking', state: 'active', polling: true },
+      { url: 'netflix-billing-update.live/renew/payment/card', category: 'Clickjacking', reportedAt: '9h ago', lastChecked: '5m ago', state: 'active' },
+      { url: 'amazon-account-suspended.top/restore/unlock', category: 'DOM Cloaking', reportedAt: '12h ago', lastChecked: '1m ago', state: 'error' },
+      { url: 'chase-online-alert.info/secure/login/confirm', category: 'Text Encoding', reportedAt: '1d ago', lastChecked: '8m ago', state: 'down', ttd: '7h 41m' },
+    ];
+    const tracking = rawTrack.map((t, i) => {
+      const s = sv[t.state];
+      const polling = !!t.polling;
+      return {
+        url: t.url, urlShort: short(t.url), category: t.category, reportedAt: t.reportedAt,
+        lastChecked: polling ? '⟳ now' : t.lastChecked,
+        status: s.status, statusBg: s.statusBg, statusFg: s.statusFg,
+        rowBg: i % 2 === 0 ? '#162233' : '#1A2940',
+        leftBorder: t.state === 'down' ? '2px solid #1F9D4F' : '2px solid transparent',
+        polling, notPolling: !polling,
+        ttd: t.state === 'down' ? t.ttd : '—',
+        ttdColor: t.state === 'down' ? '#3FDC7F' : '#6B7C8D',
+      };
+    });
+
+    return {
+      kpis, ttdBars: bars,
+      lineReported: pts(reported), lineDown: pts(down), areaReported: area(reported), areaDown: area(down),
+      dotsSvg: dots, xLabelsSvg: xLabels,
+      trackCount: tracking.length, tracking,
+    };
+  }
+}
+</script>
+</body>
+</html>

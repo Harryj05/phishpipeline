@@ -1,0 +1,261 @@
+:root {
+  --pp-width: 380px;
+  --pp-bg: #1F4E79;
+  --pp-input-bg: #24527A;
+  --pp-border: #35659A;
+  --pp-text: #ffffff;
+  --pp-text-sec: #9EC7E8;
+  --pp-text-muted: #6B7C8D;
+  --pp-phishing: #C00000;
+  --pp-phishing-light: #FF6B6B;
+  --pp-clean: #006400;
+  --pp-clean-light: #3FDC7F;
+  --pp-pending: #B45309;
+  --pp-pending-light: #F0A93B;
+  --pp-blue: #2E75B6;
+}
+
+body {
+  margin: 0;
+  width: var(--pp-width);
+  font-family: Inter, system-ui, sans-serif;
+}
+
+.pp-popup {
+  background: var(--pp-bg);
+  min-height: 480px;
+  padding: 0;
+}
+
+.pp-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 16px 12px;
+  border-bottom: 1px solid var(--pp-border);
+}
+
+.pp-logo {
+  width: 28px;
+  height: 28px;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pp-brand {
+  color: var(--pp-text);
+  font-size: 15px;
+  font-weight: 600;
+  flex: 1;
+}
+
+.pp-conn-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #6B7C8D;
+}
+
+.pp-conn-dot.online {
+  background: #3FDC7F;
+}
+
+.pp-conn-dot.offline {
+  background: #FF6B6B;
+}
+
+.pp-input-section {
+  padding: 16px;
+}
+
+.pp-url-input {
+  width: 100%;
+  box-sizing: border-box;
+  background: var(--pp-input-bg);
+  border: 1px solid var(--pp-border);
+  border-radius: 6px;
+  color: var(--pp-text);
+  padding: 10px 12px;
+  font-size: 13px;
+  font-family: inherit;
+  margin-bottom: 10px;
+  outline: none;
+}
+
+.pp-url-input:focus {
+  border-color: var(--pp-blue);
+}
+
+.pp-url-input::placeholder {
+  color: var(--pp-text-muted);
+}
+
+.pp-btn-row {
+  display: flex;
+  gap: 8px;
+}
+
+.pp-btn {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: opacity 0.15s;
+}
+
+.pp-btn:hover {
+  opacity: 0.85;
+}
+
+.pp-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.pp-btn-primary {
+  background: var(--pp-blue);
+  color: #fff;
+}
+
+.pp-btn-secondary {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--pp-text-sec);
+}
+
+/* Result states */
+
+.pp-result {
+  padding: 0 16px 16px;
+}
+
+.pp-result-card {
+  border-radius: 8px;
+  padding: 16px;
+  margin-top: 4px;
+  border-left: 3px solid transparent;
+}
+
+.pp-result-card.classifying {
+  background: rgba(46, 117, 182, 0.15);
+  border-color: var(--pp-blue);
+}
+
+.pp-result-card.phishing {
+  background: rgba(192, 0, 0, 0.15);
+  border-color: var(--pp-phishing);
+  box-shadow: 0 0 16px rgba(192, 0, 0, 0.25);
+}
+
+.pp-result-card.clean {
+  background: rgba(0, 100, 0, 0.15);
+  border-color: var(--pp-clean);
+}
+
+.pp-result-card.offline {
+  background: rgba(180, 83, 9, 0.15);
+  border-color: var(--pp-pending);
+}
+
+.pp-result-label {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.pp-result-sub {
+  font-size: 12px;
+  color: var(--pp-text-sec);
+}
+
+.pp-result-url {
+  font-family: monospace;
+  font-size: 11px;
+  color: var(--pp-text-muted);
+  margin-top: 8px;
+  word-break: break-all;
+}
+
+/* Confidence bar */
+
+.pp-conf-bar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 99px;
+  height: 5px;
+  margin: 10px 0 4px;
+  overflow: hidden;
+}
+
+.pp-conf-bar-fill {
+  height: 100%;
+  border-radius: 99px;
+  transition: width 0.5s ease;
+}
+
+.pp-conf-text {
+  font-size: 11px;
+  color: var(--pp-text-sec);
+  text-align: right;
+}
+
+/* Shimmer loading animation */
+
+.pp-shimmer {
+  background: linear-gradient(90deg, #182a3d 0%, #233650 40%, #182a3d 80%);
+  background-size: 600px 100%;
+  animation: pp-shimmer 1.5s infinite linear;
+  border-radius: 4px;
+  height: 5px;
+  margin: 10px 0;
+}
+
+/* Pulsing dot */
+
+.pp-classifying-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--pp-text-sec);
+  font-size: 13px;
+}
+
+.pp-pulse-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--pp-blue);
+  animation: pp-pulse 1.4s infinite ease-in-out;
+}
+
+/* Model attribution */
+
+.pp-model-badge {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 10.5px;
+  color: var(--pp-text-sec);
+}
+
+.pp-model-footer {
+  padding: 10px 16px 14px;
+  font-size: 10.5px;
+  color: var(--pp-text-muted);
+  text-align: center;
+}
+
+@keyframes pp-pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.3); opacity: 0.6; }
+}
+
+@keyframes pp-shimmer {
+  from { background-position: -600px 0; }
+  to { background-position: 600px 0; }
+}

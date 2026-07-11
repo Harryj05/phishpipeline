@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>body{margin:0;background:#E9E7E2;font-family:Inter,system-ui,sans-serif}</style>
+</helmet>
+<div style="padding:44px 48px 56px;box-sizing:border-box;display:flex;flex-direction:column;gap:30px;min-width:1720px">
+
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;border-bottom:1px solid rgba(31,78,121,.18);padding-bottom:18px">
+    <div>
+      <div style="font-size:22px;font-weight:700;color:#1F4E79;letter-spacing:-.02em">PhishPipeline — Extension Popup</div>
+      <div style="font-size:13px;color:#5A6B7C;margin-top:5px">Chrome extension popup · 380px wide · dark-mode-first · click <b style="color:#C00000">Scan Now</b> on the live demo to cycle states</div>
+    </div>
+    <div style="display:flex;gap:16px;font-size:11px;color:#5A6B7C">
+      <span style="display:flex;align-items:center;gap:6px"><span style="width:12px;height:12px;border-radius:3px;background:#C00000"></span>Phishing</span>
+      <span style="display:flex;align-items:center;gap:6px"><span style="width:12px;height:12px;border-radius:3px;background:#006400"></span>Clean</span>
+      <span style="display:flex;align-items:center;gap:6px"><span style="width:12px;height:12px;border-radius:3px;background:#2E75B6"></span>Action</span>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:34px;align-items:flex-start;flex-wrap:nowrap">
+
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="display:flex;align-items:center;gap:8px">
+        <span style="font-size:11px;font-weight:700;color:#fff;background:#2E75B6;padding:3px 9px;border-radius:20px;letter-spacing:.02em">INTERACTIVE</span>
+        <span style="font-size:12px;color:#5A6B7C">Live demo — click Scan Now</span>
+      </div>
+      <dc-import name="PhishPopup" variant="{{ liveVariant }}" confidence="{{ liveConfidence }}" url="{{ liveUrl }}" interactive="{{ true }}" on-scan="{{ handleScan }}" hint-size="380px,440px"></dc-import>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="display:flex;align-items:center;gap:8px">
+        <span style="font-size:11px;font-weight:700;color:#fff;background:#C00000;padding:3px 9px;border-radius:20px;letter-spacing:.02em">PHISHING</span>
+        <span style="font-size:12px;color:#5A6B7C">Threat detected</span>
+      </div>
+      <dc-import name="PhishPopup" variant="phishing" confidence="{{ 94 }}" url="http://secure-login.appleid.verify-account.com" hint-size="380px,440px"></dc-import>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="display:flex;align-items:center;gap:8px">
+        <span style="font-size:11px;font-weight:700;color:#fff;background:#006400;padding:3px 9px;border-radius:20px;letter-spacing:.02em">CLEAN</span>
+        <span style="font-size:12px;color:#5A6B7C">Safe URL</span>
+      </div>
+      <dc-import name="PhishPopup" variant="clean" confidence="{{ 98 }}" url="https://www.wikipedia.org" hint-size="380px,440px"></dc-import>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="display:flex;align-items:center;gap:8px">
+        <span style="font-size:11px;font-weight:700;color:#fff;background:#7A8794;padding:3px 9px;border-radius:20px;letter-spacing:.02em">PENDING</span>
+        <span style="font-size:12px;color:#5A6B7C">Classifying</span>
+      </div>
+      <dc-import name="PhishPopup" variant="pending" confidence="{{ 0 }}" url="https://checkout.pay-portal-92x.net" hint-size="380px,440px"></dc-import>
+    </div>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { liveVariant: 'idle', liveConfidence: 0, scanning: false };
+
+  handleScan = () => {
+    if (this.state.scanning) return;
+    this._cycle = this._cycle || 0;
+    this.setState({ liveVariant: 'pending', liveConfidence: 0, scanning: true });
+    clearTimeout(this._t);
+    this._t = setTimeout(() => {
+      const results = [
+        { v: 'phishing', c: 91 },
+        { v: 'clean', c: 97 },
+        { v: 'phishing', c: 88 },
+      ];
+      const r = results[this._cycle % results.length];
+      this._cycle += 1;
+      this.setState({ liveVariant: r.v, liveConfidence: r.c, scanning: false });
+    }, 950);
+  };
+
+  componentWillUnmount() { clearTimeout(this._t); }
+
+  renderVals() {
+    const urls = {
+      idle: '',
+      pending: 'https://checkout.pay-portal-92x.net',
+      phishing: 'http://secure-login.appleid.verify-account.com',
+      clean: 'https://www.wikipedia.org',
+    };
+    return {
+      liveVariant: this.state.liveVariant,
+      liveConfidence: this.state.liveConfidence,
+      liveUrl: urls[this.state.liveVariant] ?? '',
+      handleScan: this.handleScan,
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  body{margin:0;background:#0F1A27;font-family:Inter,system-ui,sans-serif}
+  ::-webkit-scrollbar{width:8px;height:8px}::-webkit-scrollbar-thumb{background:#2A4056;border-radius:4px}::-webkit-scrollbar-track{background:transparent}
+  @keyframes pp-drawer{from{transform:translateX(30px);opacity:0}to{transform:translateX(0);opacity:1}}
+  @keyframes pp-fade{from{opacity:0}to{opacity:1}}
+  @keyframes pp-spin{to{transform:rotate(360deg)}}
+</style>
+</helmet>
+<div style="padding:26px;color:#fff;font-size:14px;position:relative;min-height:640px;box-sizing:border-box">
+
+  <div style="background:#1F4E79;border-radius:8px;box-shadow:0 12px 32px rgba(0,0,0,.35);overflow:hidden">
+
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 20px 0;flex-wrap:wrap;gap:12px">
+      <div style="font-size:16px;font-weight:700;letter-spacing:-.01em">Automated Reports</div>
+      <div style="display:flex;gap:8px">
+        <span style="font-size:11.5px;font-weight:600;background:rgba(0,100,0,.2);color:#3FDC7F;border:1px solid rgba(31,157,79,.4);border-radius:20px;padding:3px 11px">142 submitted</span>
+        <span style="font-size:11.5px;font-weight:600;background:rgba(192,0,0,.18);color:#FF6B6B;border:1px solid rgba(192,0,0,.4);border-radius:20px;padding:3px 11px">8 failed</span>
+        <span style="font-size:11.5px;font-weight:600;background:rgba(180,83,9,.2);color:#F0A93B;border:1px solid rgba(180,83,9,.4);border-radius:20px;padding:3px 11px">3 pending</span>
+      </div>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;padding:14px 20px;margin-top:14px;border-bottom:1px solid rgba(158,199,232,.12)">
+      <div style="display:flex;align-items:center;gap:8px">
+        <span style="font-size:10px;font-weight:700;color:#6B7C8D;text-transform:uppercase;letter-spacing:.05em">Status</span>
+        <div style="display:flex;gap:5px">
+          <sc-for list="{{ statusPills }}" as="p" hint-placeholder-count="4">
+            <button onClick="{{ p.onClick }}" style="background:{{ p.bg }};border:1px solid {{ p.border }};color:{{ p.fg }};border-radius:20px;padding:4px 11px;font-size:10.5px;font-weight:700;font-family:inherit;letter-spacing:.03em;cursor:pointer">{{ p.label }}</button>
+          </sc-for>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <span style="font-size:10px;font-weight:700;color:#6B7C8D;text-transform:uppercase;letter-spacing:.05em">Channel</span>
+        <div style="display:flex;gap:5px">
+          <sc-for list="{{ channelPills }}" as="p" hint-placeholder-count="5">
+            <button onClick="{{ p.onClick }}" style="background:{{ p.bg }};border:1px solid {{ p.border }};color:{{ p.fg }};border-radius:20px;padding:4px 11px;font-size:10.5px;font-weight:700;font-family:inherit;letter-spacing:.03em;cursor:pointer">{{ p.label }}</button>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 56px 84px 82px 82px 110px 128px;gap:10px;padding:10px 20px;font-size:10px;font-weight:700;color:#6B7C8D;text-transform:uppercase;letter-spacing:.05em;align-items:center">
+      <div>URL</div><div style="text-align:center">GSB</div><div style="text-align:center">PhishTank</div><div style="text-align:center">OpenPhish</div><div style="text-align:center">Registrar</div><div>Reported</div><div style="text-align:right">Actions</div>
+    </div>
+
+    <div>
+      <sc-for list="{{ rows }}" as="r" hint-placeholder-count="6">
+        <div style="display:grid;grid-template-columns:1fr 56px 84px 82px 82px 110px 128px;gap:10px;height:48px;align-items:center;padding:0 20px;background:{{ r.rowBg }};border-bottom:1px solid rgba(158,199,232,.05)">
+          <div style="font-size:12px;font-family:ui-monospace,Menlo,monospace;color:#9EC7E8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="{{ r.url }}">{{ r.url }}</div>
+          <div style="text-align:center"><span title="{{ r.gsb.title }}" style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;font-size:10px;font-weight:800;background:{{ r.gsb.bg }};color:{{ r.gsb.fg }}">{{ r.gsb.icon }}</span></div>
+          <div style="text-align:center"><span title="{{ r.pt.title }}" style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;font-size:10px;font-weight:800;background:{{ r.pt.bg }};color:{{ r.pt.fg }}">{{ r.pt.icon }}</span></div>
+          <div style="text-align:center"><span title="{{ r.op.title }}" style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;font-size:10px;font-weight:800;background:{{ r.op.bg }};color:{{ r.op.fg }}">{{ r.op.icon }}</span></div>
+          <div style="text-align:center"><span title="{{ r.rg.title }}" style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;font-size:10px;font-weight:800;background:{{ r.rg.bg }};color:{{ r.rg.fg }}">{{ r.rg.icon }}</span></div>
+          <div style="font-size:11.5px;color:#94A3B8">{{ r.reportedAt }}</div>
+          <div style="display:flex;gap:12px;justify-content:flex-end;align-items:center">
+            <sc-if value="{{ r.hasFailed }}"><button onClick="{{ r.onRetry }}" style="background:none;border:none;color:#F0A93B;font-size:11px;font-weight:600;font-family:inherit;cursor:pointer;padding:0" style-hover="text-decoration:underline">Retry Failed</button></sc-if>
+            <button onClick="{{ r.onDetails }}" style="background:none;border:none;color:#8FC0EC;font-size:11px;font-weight:600;font-family:inherit;cursor:pointer;padding:0" style-hover="text-decoration:underline">Details ↗</button>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+
+    <div style="padding:14px 20px;font-size:11.5px;color:#94A3B8;display:flex;align-items:center;justify-content:space-between">
+      <span>Showing 1–{{ shownCount }} of 142</span>
+      <div style="display:flex;gap:6px">
+        <button style="background:#162233;border:1px solid #2A4056;color:#6B7C8D;border-radius:6px;padding:5px 11px;font-size:11px;font-family:inherit;cursor:not-allowed">Prev</button>
+        <button style="background:#162233;border:1px solid #2A4056;color:#CBD5E1;border-radius:6px;padding:5px 11px;font-size:11px;font-family:inherit;cursor:pointer" style-hover="border-color:#2E75B6">Next</button>
+      </div>
+    </div>
+  </div>
+
+  <sc-if value="{{ drawerOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeDrawer }}" style="position:fixed;inset:0;background:rgba(6,14,24,.6);z-index:40;animation:pp-fade .2s ease-out"></div>
+    <div style="position:fixed;top:0;right:0;bottom:0;width:480px;max-width:92vw;background:#132132;z-index:50;box-shadow:-16px 0 44px rgba(0,0,0,.5);display:flex;flex-direction:column;animation:pp-drawer .24s cubic-bezier(.2,.7,.3,1)">
+      <div style="flex:none;padding:20px 22px 16px;border-bottom:1px solid rgba(158,199,232,.12)">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
+          <div style="min-width:0">
+            <div style="font-size:10px;font-weight:700;color:#6B7C8D;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">Report Detail</div>
+            <div style="font-size:12.5px;font-family:ui-monospace,Menlo,monospace;color:#EAF2FA;overflow-x:auto;white-space:nowrap;padding-bottom:3px">{{ activeUrl }}</div>
+            <div style="font-size:11.5px;color:#94A3B8;margin-top:5px">Reported {{ activeReportedAt }}</div>
+          </div>
+          <button onClick="{{ closeDrawer }}" style="flex:none;background:#1F4E79;border:none;color:#CBD5E1;width:28px;height:28px;border-radius:7px;font-size:16px;line-height:1;font-family:inherit;cursor:pointer" style-hover="background:#2A5C88">×</button>
+        </div>
+      </div>
+
+      <div style="flex:1;min-height:0;overflow-y:auto;padding:18px 22px;display:flex;flex-direction:column;gap:12px">
+        <sc-for list="{{ channelCards }}" as="c" hint-placeholder-count="4">
+          <div style="background:#1F4E79;border:1px solid {{ c.borderColor }};border-left:3px solid {{ c.accent }};border-radius:8px;padding:14px 15px;display:flex;flex-direction:column;gap:10px">
+            <div style="display:flex;align-items:center;justify-content:space-between">
+              <div style="display:flex;align-items:center;gap:10px">
+                <span style="width:28px;height:28px;border-radius:7px;background:{{ c.badgeBg }};color:{{ c.badgeFg }};display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800">{{ c.letter }}</span>
+                <span style="font-size:13.5px;font-weight:700">{{ c.name }}</span>
+              </div>
+              <span style="font-size:10px;font-weight:800;letter-spacing:.05em;padding:4px 10px;border-radius:4px;background:{{ c.statusBg }};color:{{ c.statusFg }}">{{ c.statusLabel }}</span>
+            </div>
+            <div style="font-size:12px;color:#CBD5E1;line-height:1.45">{{ c.detail }}</div>
+            <sc-if value="{{ c.isFailed }}">
+              <div style="font-size:11.5px;color:#FF6B6B;font-family:ui-monospace,Menlo,monospace">{{ c.error }}</div>
+            </sc-if>
+            <div style="display:flex;align-items:center;justify-content:space-between">
+              <span style="font-size:10.5px;color:#94A3B8">{{ c.timestamp }}</span>
+              <sc-if value="{{ c.isFailed }}"><button onClick="{{ c.onRetry }}" style="background:rgba(180,83,9,.2);border:1px solid rgba(180,83,9,.5);color:#F0A93B;border-radius:6px;padding:5px 12px;font-size:10.5px;font-weight:700;font-family:inherit;cursor:pointer" style-hover="background:#B45309;color:#fff">{{ c.retryLabel }}</button></sc-if>
+            </div>
+          </div>
+        </sc-for>
+
+        <div style="background:#162233;border-radius:8px;overflow:hidden;margin-top:2px">
+          <div onClick="{{ toggleInfo }}" style="display:flex;align-items:center;justify-content:space-between;padding:13px 15px;cursor:pointer;user-select:none" style-hover="background:#1a2940">
+            <span style="font-size:12.5px;font-weight:700;color:#CBD5E1">Detection Info</span>
+            <span style="font-size:11px;color:#6B7C8D;transform:{{ infoChevron }}">▾</span>
+          </div>
+          <sc-if value="{{ infoOpen }}">
+            <div style="padding:0 15px 15px;display:flex;flex-direction:column;gap:9px">
+              <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:#94A3B8">Confidence score</span><b style="color:#FF6B6B;font-weight:700;font-variant-numeric:tabular-nums">0.89</b></div>
+              <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:#94A3B8">Attack category</span><span style="color:#EAF2FA;font-weight:500">Credential Harvesting</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:#94A3B8">Time first seen</span><span style="color:#EAF2FA;font-weight:500">4h 12m ago</span></div>
+            </div>
+          </sc-if>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  // status codes: sub=submitted, fail=failed, pend=pending, skip=skipped
+  state = {
+    status: 'ALL', channel: 'ALL', drawerId: null, infoOpen: true,
+    reports: [
+      { id: 1, url: 'paypal-secure-login.xyz/verify', at: '4 hours ago', reportedAt: '4h ago', ch: { gsb: 'sub', pt: 'sub', op: 'sub', rg: 'pend' } },
+      { id: 2, url: 'apple-id-verify.online/signin', at: '6 hours ago', reportedAt: '6h ago', ch: { gsb: 'sub', pt: 'fail', op: 'sub', rg: 'skip' } },
+      { id: 3, url: 'netflix-billing-update.live/renew', at: '9 hours ago', reportedAt: '9h ago', ch: { gsb: 'sub', pt: 'sub', op: 'sub', rg: 'sub' } },
+      { id: 4, url: 'amazon-account-suspended.top/restore', at: '12 hours ago', reportedAt: '12h ago', ch: { gsb: 'fail', pt: 'pend', op: 'sub', rg: 'fail' } },
+      { id: 5, url: 'chase-online-alert.info/secure', at: '1 day ago', reportedAt: '1d ago', ch: { gsb: 'sub', pt: 'sub', op: 'pend', rg: 'skip' } },
+      { id: 6, url: 'coinbase-wallet-verify.app/unlock', at: '2 days ago', reportedAt: '2d ago', ch: { gsb: 'sub', pt: 'sub', op: 'sub', rg: 'skip' } },
+    ],
+  };
+
+  STATUSES = ['ALL', 'SUBMITTED', 'FAILED', 'PENDING'];
+  CHANNELS = ['ALL', 'GSB', 'PHISHTANK', 'OPENPHISH', 'REGISTRAR'];
+  CH_KEYS = { GSB: 'gsb', PHISHTANK: 'pt', OPENPHISH: 'op', REGISTRAR: 'rg' };
+
+  iconFor(code) {
+    const map = {
+      sub: { icon: '✓', bg: 'rgba(0,100,0,.25)', fg: '#3FDC7F', title: 'Submitted' },
+      fail: { icon: '✗', bg: 'rgba(192,0,0,.22)', fg: '#FF6B6B', title: 'Failed' },
+      pend: { icon: '⏳', bg: 'rgba(180,83,9,.22)', fg: '#F0A93B', title: 'Pending' },
+      skip: { icon: '—', bg: 'rgba(148,163,184,.12)', fg: '#6B7C8D', title: 'Skipped — no API key' },
+    };
+    return map[code] || map.skip;
+  }
+
+  rowStatuses(r) { return Object.values(r.ch); }
+  matchStatus(r) {
+    if (this.state.status === 'ALL') return true;
+    const want = { SUBMITTED: 'sub', FAILED: 'fail', PENDING: 'pend' }[this.state.status];
+    return this.rowStatuses(r).includes(want);
+  }
+  matchChannel(r) {
+    if (this.state.channel === 'ALL') return true;
+    const code = r.ch[this.CH_KEYS[this.state.channel]];
+    return code === 'sub' || code === 'fail' || code === 'pend';
+  }
+  visible() { return this.state.reports.filter((r) => this.matchStatus(r) && this.matchChannel(r)); }
+
+  retryRow(id) {
+    this.setState((s) => ({ reports: s.reports.map((r) => {
+      if (r.id !== id) return r;
+      const ch = { ...r.ch };
+      Object.keys(ch).forEach((k) => { if (ch[k] === 'fail') ch[k] = 'pend'; });
+      return { ...r, ch };
+    }) }));
+  }
+  retryChannel(chKey) {
+    const id = this.state.drawerId;
+    this.setState((s) => ({ reports: s.reports.map((r) => (r.id === id ? { ...r, ch: { ...r.ch, [chKey]: 'pend' } } : r)) }));
+  }
+
+  channelMeta(key) {
+    return {
+      gsb: { name: 'Google Safe Browsing', letter: 'G', badgeBg: 'rgba(46,117,182,.25)', badgeFg: '#8FC0EC',
+        detail: (c) => c === 'sub' ? 'Accepted — added to Safe Browsing list' : c === 'pend' ? 'Queued — awaiting API response' : 'Submission rejected by endpoint',
+        ts: 'Confirmed 4h ago' },
+      pt: { name: 'PhishTank', letter: 'P', badgeBg: 'rgba(180,83,9,.25)', badgeFg: '#F0A93B',
+        detail: (c) => c === 'sub' ? 'ID #2847391 — under verification' : c === 'pend' ? 'Awaiting community verification' : 'Submission failed',
+        ts: 'Submitted 4h ago' },
+      op: { name: 'OpenPhish', letter: 'O', badgeBg: 'rgba(0,100,0,.25)', badgeFg: '#3FDC7F',
+        detail: (c) => c === 'sub' ? 'Added to live feed' : c === 'pend' ? 'Ingestion in progress' : 'Feed rejected entry',
+        ts: 'Added 4h ago' },
+      rg: { name: 'Registrar Abuse', letter: 'R', badgeBg: 'rgba(123,47,190,.28)', badgeFg: '#C79BEC',
+        detail: (c) => c === 'sub' ? 'Abuse report sent to abuse@registrar.com' : c === 'pend' ? 'Report drafted — sending' : 'Abuse report bounced',
+        ts: 'Sent 4h ago' },
+    }[key];
+  }
+  statusView(code) {
+    const map = {
+      sub: { label: 'SUBMITTED', bg: 'rgba(0,100,0,.25)', fg: '#3FDC7F', accent: '#1F9D4F', border: 'rgba(31,157,79,.4)' },
+      fail: { label: 'FAILED', bg: 'rgba(192,0,0,.22)', fg: '#FF6B6B', accent: '#C00000', border: 'rgba(192,0,0,.45)' },
+      pend: { label: 'PENDING', bg: 'rgba(180,83,9,.22)', fg: '#F0A93B', accent: '#B45309', border: 'rgba(180,83,9,.45)' },
+      skip: { label: 'SKIPPED', bg: 'rgba(148,163,184,.14)', fg: '#94A3B8', accent: '#3a4a5c', border: 'rgba(148,163,184,.2)' },
+    };
+    return map[code] || map.skip;
+  }
+
+  renderVals() {
+    const s = this.state;
+    const vis = this.visible();
+    const active = s.reports.find((r) => r.id === s.drawerId);
+    const mkPill = (label, cur, setter) => ({ label, onClick: () => setter(label),
+      bg: cur === label ? '#2E75B6' : 'transparent', border: cur === label ? '#2E75B6' : '#4E7BA6',
+      fg: cur === label ? '#fff' : '#9EC7E8' });
+
+    let channelCards = [];
+    if (active) {
+      channelCards = ['gsb', 'pt', 'op', 'rg'].map((k) => {
+        const code = active.ch[k];
+        const meta = this.channelMeta(k);
+        const sv = this.statusView(code);
+        return {
+          name: meta.name, letter: meta.letter, badgeBg: meta.badgeBg, badgeFg: meta.badgeFg,
+          statusLabel: sv.label, statusBg: sv.bg, statusFg: sv.fg, accent: sv.accent, borderColor: sv.border,
+          detail: code === 'skip' ? 'Skipped — no API key configured for this channel' : meta.detail(code),
+          isFailed: code === 'fail', error: '403 Forbidden — check API key',
+          timestamp: code === 'skip' ? '—' : meta.ts, retryLabel: 'Retry',
+          onRetry: () => this.retryChannel(k),
+        };
+      });
+    }
+
+    return {
+      statusPills: this.STATUSES.map((l) => mkPill(l, s.status, (x) => this.setState({ status: x }))),
+      channelPills: this.CHANNELS.map((l) => mkPill(l, s.channel, (x) => this.setState({ channel: x }))),
+      rows: vis.map((r, i) => ({
+        url: r.url, reportedAt: r.reportedAt, rowBg: i % 2 === 0 ? '#162233' : '#1A2940',
+        gsb: this.iconFor(r.ch.gsb), pt: this.iconFor(r.ch.pt), op: this.iconFor(r.ch.op), rg: this.iconFor(r.ch.rg),
+        hasFailed: this.rowStatuses(r).includes('fail'),
+        onRetry: () => this.retryRow(r.id), onDetails: () => this.setState({ drawerId: r.id, infoOpen: true }),
+      })),
+      shownCount: vis.length,
+      drawerOpen: !!active, closeDrawer: () => this.setState({ drawerId: null }),
+      activeUrl: active ? 'https://' + active.url : '', activeReportedAt: active ? active.at : '',
+      channelCards,
+      infoOpen: s.infoOpen, toggleInfo: () => this.setState((p) => ({ infoOpen: !p.infoOpen })),
+      infoChevron: s.infoOpen ? 'rotate(0deg)' : 'rotate(-90deg)',
+    };
+  }
+}
+</script>
+</body>
+</html>

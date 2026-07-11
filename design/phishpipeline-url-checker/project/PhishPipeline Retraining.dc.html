@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+<template id="__bundler_thumbnail" data-bg-color="#0F1A27">
+  <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="600" cy="360" r="150" fill="none" stroke="#162233" stroke-width="34"></circle>
+    <circle cx="600" cy="360" r="150" fill="none" stroke="#7B2FBE" stroke-width="34" stroke-linecap="round" stroke-dasharray="942" stroke-dashoffset="311" transform="rotate(-90 600 360)"></circle>
+    <text x="600" y="378" fill="#ffffff" font-family="Inter, system-ui, sans-serif" font-size="88" font-weight="800" text-anchor="middle">67%</text>
+    <text x="600" y="590" fill="#C79BEC" font-family="Inter, system-ui, sans-serif" font-size="40" font-weight="700" text-anchor="middle">Model Retraining</text>
+  </svg>
+</template>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  body{margin:0;background:#0F1A27;font-family:Inter,system-ui,sans-serif}
+  ::-webkit-scrollbar{width:8px}::-webkit-scrollbar-thumb{background:#2A4056;border-radius:4px}
+  @keyframes pp-glow{0%,100%{box-shadow:0 0 22px rgba(123,47,190,.45),inset 0 1px 0 rgba(255,255,255,.14)}50%{box-shadow:0 0 34px rgba(123,47,190,.75),inset 0 1px 0 rgba(255,255,255,.14)}}
+  @keyframes pp-spin{to{transform:rotate(360deg)}}
+  @keyframes pp-ppulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.82)}}
+  @keyframes pp-ripple{0%{transform:scale(.4);opacity:.7}100%{transform:scale(2.4);opacity:0}}
+  @keyframes pp-dash{to{stroke-dashoffset:0}}
+  @keyframes pp-float{0%{transform:translateY(0) rotate(0);opacity:0}10%{opacity:1}100%{transform:translateY(-160px) rotate(220deg);opacity:0}}
+</style>
+</helmet>
+<div style="padding:20px;color:#fff;font-size:14px;box-sizing:border-box;display:flex;flex-direction:column;gap:16px">
+
+  <div style="display:flex;align-items:center;gap:10px">
+    <div style="font-size:11px;color:#6B7C8D;font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-right:2px">Demo screen</div>
+    <div style="display:flex;gap:5px;background:#162233;padding:4px;border-radius:8px">
+      <sc-for list="{{ screenTabs }}" as="t" hint-placeholder-count="3">
+        <button onClick="{{ t.onClick }}" style="background:{{ t.bg }};border:none;color:{{ t.fg }};border-radius:6px;padding:6px 13px;font-size:12px;font-weight:600;font-family:inherit;cursor:pointer">{{ t.label }}</button>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:16px;align-items:stretch;min-height:560px">
+
+    <div style="flex:0 0 60%;min-width:0;background:#1F4E79;border-radius:8px;padding:20px;box-shadow:0 12px 32px rgba(0,0,0,.35);display:flex;flex-direction:column">
+
+      <sc-if value="{{ isIdle }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;flex-direction:column;gap:16px;height:100%">
+          <div style="display:flex;align-items:center;gap:11px">
+            <span style="width:34px;height:34px;border-radius:9px;background:rgba(123,47,190,.24);color:#C79BEC;display:flex;align-items:center;justify-content:center">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#C79BEC" stroke-width="1.6"><circle cx="6" cy="7" r="2"></circle><circle cx="6" cy="17" r="2"></circle><circle cx="18" cy="12" r="2"></circle><path d="M8 7 H13 M8 17 H13 M13 7 L16 11 M13 17 L16 13"></path></svg>
+            </span>
+            <div style="font-size:17px;font-weight:700;letter-spacing:-.01em">Model Retraining</div>
+          </div>
+
+          <div style="background:#162233;border-radius:8px;padding:16px">
+            <div style="font-size:20px;font-weight:800;margin-bottom:12px">Active Model: v4</div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div style="display:flex;align-items:center;gap:9px;font-size:13px;color:#CBD5E1"><span style="width:8px;height:8px;border-radius:50%;background:#2E75B6"></span>URL Transformer F1: <b style="color:#fff;font-weight:700">0.923</b></div>
+              <div style="display:flex;align-items:center;gap:9px;font-size:13px;color:#CBD5E1"><span style="width:8px;height:8px;border-radius:50%;background:#2E75B6"></span>HTML Classifier F1: <b style="color:#fff;font-weight:700">0.887</b></div>
+            </div>
+            <div style="font-size:11.5px;color:#94A3B8;margin-top:12px;padding-top:11px;border-top:1px solid rgba(158,199,232,.1)">Trained: 3 days ago &nbsp;·&nbsp; Dataset: 2,847 samples</div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <div style="display:flex;align-items:center;justify-content:space-between">
+              <div style="font-size:13.5px;font-weight:700;color:#EAF2FA">34 new labels since last training</div>
+              <div style="font-size:11.5px;color:#94A3B8">28 TP / 6 FP</div>
+            </div>
+            <div style="display:flex;height:7px;border-radius:4px;overflow:hidden;background:#162233"><div style="width:82%;background:#1F9D4F"></div><div style="width:18%;background:#B45309"></div></div>
+
+            <div style="background:#162233;border-radius:8px;padding:14px">
+              <div style="font-size:12px;color:#CBD5E1;margin-bottom:11px">Will generate <b style="color:#C79BEC;font-weight:700">~102 augmented samples</b> across 15 attack types</div>
+              <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:7px">
+                <sc-for list="{{ attackTypes }}" as="a" hint-placeholder-count="15">
+                  <span style="font-size:10.5px;font-weight:600;color:#C79BEC;background:rgba(123,47,190,.15);border:1px solid rgba(123,47,190,.32);border-radius:4px;padding:4px 8px;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ a }}</span>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+
+          <button onClick="{{ startRetraining }}" style="margin-top:auto;background:#7B2FBE;border:none;color:#fff;border-radius:8px;padding:14px;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;letter-spacing:.02em;animation:pp-glow 2.4s ease-in-out infinite" style-hover="background:#8d3ad4">Start Retraining</button>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isProgress }}">
+        <div style="display:flex;flex-direction:column;gap:18px;height:100%;align-items:center">
+          <div style="position:relative;width:150px;height:150px;margin-top:6px">
+            <svg width="150" height="150" viewBox="0 0 150 150">
+              <circle cx="75" cy="75" r="64" fill="none" stroke="#162233" stroke-width="12"></circle>
+              <circle cx="75" cy="75" r="64" fill="none" stroke="#7B2FBE" stroke-width="12" stroke-linecap="round" stroke-dasharray="402" stroke-dashoffset="{{ ringOffset }}" transform="rotate(-90 75 75)" style="transition:stroke-dashoffset .5s ease"></circle>
+            </svg>
+            <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center"><div style="font-size:30px;font-weight:800">67%</div><div style="font-size:10.5px;color:#94A3B8">retraining</div></div>
+          </div>
+
+          <div style="display:flex;align-items:center;gap:0;width:100%;justify-content:space-between">
+            <sc-for list="{{ steps }}" as="s" hint-placeholder-count="4">
+              <div style="display:flex;flex-direction:column;align-items:center;gap:6px;flex:1">
+                <span style="width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;background:{{ s.bg }};color:{{ s.fg }};animation:{{ s.anim }}">{{ s.icon }}</span>
+                <span style="font-size:9.5px;color:{{ s.labelColor }};text-align:center;line-height:1.2">{{ s.label }}</span>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="background:#162233;border-radius:8px;padding:15px;width:100%;box-sizing:border-box;display:flex;flex-direction:column;gap:10px">
+            <div style="font-size:13px;font-weight:600;color:#EAF2FA">Fine-tuning URLTransformer — Epoch 14/20</div>
+            <div style="font-size:12px;color:#3FDC7F;font-weight:600">Val F1: 0.931 <span style="color:#94A3B8;font-weight:400">(↑ from 0.923)</span></div>
+            <div style="display:flex;align-items:flex-end;gap:2px;height:38px;padding-top:4px">
+              <sc-for list="{{ lossBars }}" as="l" hint-placeholder-count="16">
+                <div style="flex:1;height:{{ l }}%;background:linear-gradient(to top,#7B2FBE,#a45fe0);border-radius:1px;min-height:2px"></div>
+              </sc-for>
+            </div>
+            <div style="font-size:10px;color:#6B7C8D">Training loss ↓</div>
+          </div>
+
+          <div style="display:flex;align-items:center;justify-content:space-between;width:100%;margin-top:auto">
+            <div style="font-size:12px;color:#94A3B8">Estimated: <b style="color:#CBD5E1;font-weight:600">8 minutes remaining</b></div>
+            <button onClick="{{ cancelRetraining }}" title="Cancelling discards all epoch progress" style="background:transparent;border:1px solid #4E7BA6;color:#CBD5E1;border-radius:6px;padding:7px 14px;font-size:12px;font-weight:600;font-family:inherit;cursor:pointer" style-hover="border-color:#C00000;color:#FF6B6B">Cancel</button>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isComplete }}">
+        <div style="display:flex;flex-direction:column;gap:18px;height:100%;align-items:center;position:relative;overflow:hidden">
+          <div style="position:absolute;inset:0;pointer-events:none">{{ confetti }}</div>
+          <div style="position:relative;margin-top:14px;display:flex;align-items:center;justify-content:center">
+            <span style="position:absolute;width:80px;height:80px;border-radius:50%;background:rgba(31,157,79,.4);animation:pp-ripple 1.8s ease-out infinite"></span>
+            <span style="position:absolute;width:80px;height:80px;border-radius:50%;background:rgba(31,157,79,.4);animation:pp-ripple 1.8s ease-out .9s infinite"></span>
+            <span style="position:relative;width:66px;height:66px;border-radius:50%;background:#1F9D4F;display:flex;align-items:center;justify-content:center;box-shadow:0 0 24px rgba(31,157,79,.6)"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 12.5 L10 16.5 L18 8"></path></svg></span>
+          </div>
+          <div style="text-align:center"><div style="font-size:20px;font-weight:800">New Model Deployed: v5</div><div style="font-size:12px;color:#94A3B8;margin-top:4px">Live and serving traffic</div></div>
+
+          <div style="background:#162233;border-radius:8px;padding:16px;width:100%;box-sizing:border-box">
+            <div style="display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:10px;align-items:center">
+              <div></div>
+              <div style="font-size:11px;color:#94A3B8;font-weight:600;text-align:right">v4 (Prev)</div>
+              <div style="font-size:11px;color:#3FDC7F;font-weight:700;text-align:right">v5 (New)</div>
+              <sc-for list="{{ compareRows }}" as="c" hint-placeholder-count="3">
+                <div style="font-size:12px;color:#CBD5E1">{{ c.metric }}</div>
+                <div style="font-size:12.5px;color:#94A3B8;text-align:right;font-variant-numeric:tabular-nums">{{ c.prev }}</div>
+                <div style="font-size:12.5px;color:#3FDC7F;font-weight:700;text-align:right;font-variant-numeric:tabular-nums">{{ c.next }} <span style="font-size:10px">{{ c.delta }}</span></div>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="font-size:11.5px;color:#94A3B8;text-align:center">2,881 samples &nbsp;·&nbsp; <span style="color:#3FDC7F">+34 new labels</span> &nbsp;·&nbsp; <span style="color:#C79BEC">+102 augmented</span></div>
+
+          <div style="display:flex;gap:10px;width:100%;margin-top:auto">
+            <button style="flex:1;background:#2E75B6;border:none;color:#fff;border-radius:8px;padding:12px;font-size:13px;font-weight:700;font-family:inherit;cursor:pointer" style-hover="background:#3a86cc">View Full Report</button>
+            <button onClick="{{ goIdle }}" style="flex:1;background:transparent;border:1px solid #4E7BA6;color:#CBD5E1;border-radius:8px;padding:12px;font-size:13px;font-weight:600;font-family:inherit;cursor:pointer" style-hover="background:rgba(78,123,166,.18)">Done</button>
+          </div>
+        </div>
+      </sc-if>
+    </div>
+
+    <div style="flex:1;min-width:0;background:#1F4E79;border-radius:8px;padding:18px;box-shadow:0 12px 32px rgba(0,0,0,.35);display:flex;flex-direction:column;gap:12px">
+      <div style="font-size:15px;font-weight:700">Version History</div>
+      <sc-for list="{{ versions }}" as="v" hint-placeholder-count="4">
+        <div style="background:#162233;border-radius:8px;padding:13px 14px;border-left:3px solid {{ v.accent }}">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:7px">
+            <div style="font-size:14px;font-weight:700">{{ v.name }}</div>
+            <sc-if value="{{ v.isActive }}"><span style="font-size:9.5px;font-weight:800;letter-spacing:.04em;background:rgba(0,100,0,.25);color:#3FDC7F;border-radius:4px;padding:3px 8px">ACTIVE</span></sc-if>
+            <sc-if value="{{ v.notActive }}"><button style="background:transparent;border:1px solid #4E7BA6;color:#9EC7E8;border-radius:5px;padding:3px 10px;font-size:10.5px;font-weight:600;font-family:inherit;cursor:pointer" style-hover="background:rgba(78,123,166,.18)">Rollback</button></sc-if>
+          </div>
+          <div style="font-size:11px;color:#CBD5E1;font-variant-numeric:tabular-nums">URL F1: {{ v.urlF1 }} &nbsp;|&nbsp; HTML F1: {{ v.htmlF1 }}</div>
+          <div style="font-size:10.5px;color:#6B7C8D;margin-top:5px">{{ v.trained }} &nbsp;·&nbsp; {{ v.dataset }}</div>
+        </div>
+      </sc-for>
+    </div>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { screen: 'idle' };
+  componentWillUnmount() { clearTimeout(this._t); }
+
+  startRetraining = () => {
+    this.setState({ screen: 'progress' });
+    clearTimeout(this._t);
+    this._t = setTimeout(() => this.setState({ screen: 'complete' }), 2600);
+  };
+  cancelRetraining = () => { clearTimeout(this._t); this.setState({ screen: 'idle' }); };
+  goIdle = () => this.setState({ screen: 'idle' });
+
+  renderVals() {
+    const s = this.state;
+    const R = React.createElement;
+    const tab = (label, key) => ({ label, onClick: () => { clearTimeout(this._t); this.setState({ screen: key }); },
+      bg: s.screen === key ? '#7B2FBE' : 'transparent', fg: s.screen === key ? '#fff' : '#9EC7E8' });
+
+    const attackTypes = ['JS Redirect','Hidden iframe','Base64 Script','Homograph','Zero-width','Meta Refresh','Form Hijack','Favicon Spoof','DOM Cloaking','URL Shortener','Punycode','IP Host','Subdomain Flood','Mixed Content','CSS Hidden'];
+
+    const stepDefs = [
+      { label: 'Loading Dataset', st: 'done' },
+      { label: 'Augmenting', st: 'done' },
+      { label: 'Training URL Model', st: 'current' },
+      { label: 'Training HTML Model', st: 'pending' },
+    ];
+    const steps = stepDefs.map((d) => {
+      if (d.st === 'done') return { label: d.label, icon: '✓', bg: 'rgba(0,100,0,.3)', fg: '#3FDC7F', labelColor: '#CBD5E1', anim: 'none' };
+      if (d.st === 'current') return { label: d.label, icon: '◉', bg: 'rgba(123,47,190,.35)', fg: '#C79BEC', labelColor: '#EAF2FA', anim: 'pp-ppulse 1.4s ease-in-out infinite' };
+      return { label: d.label, icon: '○', bg: '#162233', fg: '#6B7C8D', labelColor: '#6B7C8D', anim: 'none' };
+    });
+
+    const lossBars = [100,94,88,83,76,72,66,61,55,50,44,40,35,31,27,24];
+
+    const versions = [
+      { name: 'v4', accent: '#1F9D4F', isActive: true, notActive: false, urlF1: '0.923', htmlF1: '0.887', trained: '3 days ago', dataset: '2,847 samples' },
+      { name: 'v3', accent: '#3a4a5c', isActive: false, notActive: true, urlF1: '0.908', htmlF1: '0.871', trained: '2 weeks ago', dataset: '2,610 samples' },
+      { name: 'v2', accent: '#3a4a5c', isActive: false, notActive: true, urlF1: '0.884', htmlF1: '0.849', trained: '5 weeks ago', dataset: '2,204 samples' },
+      { name: 'v1', accent: '#3a4a5c', isActive: false, notActive: true, urlF1: '0.851', htmlF1: '0.812', trained: '9 weeks ago', dataset: '1,780 samples' },
+    ];
+
+    const compareRows = [
+      { metric: 'URL Transformer F1', prev: '0.923', next: '0.941', delta: '↑.018' },
+      { metric: 'HTML Classifier F1', prev: '0.887', next: '0.902', delta: '↑.015' },
+      { metric: 'Dataset Size', prev: '2,847', next: '2,881', delta: '↑34' },
+    ];
+
+    const colors = ['#2E75B6', '#1F9D4F', '#B45309', '#7B2FBE', '#C79BEC', '#3FDC7F'];
+    const confetti = [];
+    for (let i = 0; i < 26; i++) {
+      const left = (i * 37) % 100;
+      const delay = (i % 10) * 0.22;
+      const dur = 2.6 + (i % 5) * 0.4;
+      const size = 5 + (i % 3) * 2;
+      confetti.push(R('span', { key: i, style: {
+        position: 'absolute', bottom: '20%', left: left + '%', width: size, height: size,
+        borderRadius: i % 2 ? '50%' : '1px', background: colors[i % colors.length],
+        animation: `pp-float ${dur}s ease-in ${delay}s infinite`,
+      } }));
+    }
+
+    return {
+      screenTabs: [tab('1 · Idle', 'idle'), tab('2 · In Progress', 'progress'), tab('3 · Complete', 'complete')],
+      isIdle: s.screen === 'idle', isProgress: s.screen === 'progress', isComplete: s.screen === 'complete',
+      startRetraining: this.startRetraining, cancelRetraining: this.cancelRetraining, goIdle: this.goIdle,
+      attackTypes, steps, lossBars, versions, compareRows, confetti,
+      ringOffset: 402 - 402 * 0.67,
+    };
+  }
+}
+</script>
+</body>
+</html>
