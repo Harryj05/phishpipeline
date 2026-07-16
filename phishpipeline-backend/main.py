@@ -43,6 +43,10 @@ app.include_router(analytics.router)
 takedown_tracker = TakedownTracker()
 
 
+def _env_flag(name: str) -> bool:
+    return os.environ.get(name, "").strip().lower() in {"1", "true", "yes", "on"}
+
+
 @app.on_event("startup")
 async def on_startup():
     init_db()
@@ -67,7 +71,7 @@ async def on_startup():
     # slow waiting on a cold model/tokenizer download+load.
     # Set PHISHPIPELINE_SKIP_MODEL_PRELOAD=1 to skip this in local dev/testing
     # environments without access to the model weights (e.g. no internet).
-    if not os.environ.get("PHISHPIPELINE_SKIP_MODEL_PRELOAD"):
+    if not _env_flag("PHISHPIPELINE_SKIP_MODEL_PRELOAD"):
         url_transformer.preload()
         html_classifier.preload()
 
@@ -82,10 +86,10 @@ async def on_startup():
     finally:
         db.close()
 
-    if not os.environ.get("PHISHPIPELINE_SKIP_TAKEDOWN_TRACKER"):
+    if not _env_flag("PHISHPIPELINE_SKIP_TAKEDOWN_TRACKER"):
         asyncio.create_task(takedown_tracker.start())
 
-    if not os.environ.get("PHISHPIPELINE_SKIP_CERTSTREAM"):
+    if not _env_flag("PHISHPIPELINE_SKIP_CERTSTREAM"):
         asyncio.create_task(certstream_listener.run_listener())
 
 
