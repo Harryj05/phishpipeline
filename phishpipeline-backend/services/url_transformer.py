@@ -1,6 +1,7 @@
 """Stage 1 classifier: fine-tuned BERT model over the raw URL string."""
 
 import logging
+import os
 
 import torch
 from transformers import AutoModelForSequenceClassification, AutoTokenizer
@@ -55,6 +56,16 @@ def _heuristic_classify(url: str) -> dict:
 
 def _load():
     global _tokenizer, _model
+
+    if os.environ.get("PHISHPIPELINE_FORCE_HEURISTIC_CLASSIFIER", "").strip().lower() in {
+        "1",
+        "true",
+        "yes",
+        "on",
+    }:
+        _tokenizer = None
+        _model = "stub"
+        return _tokenizer, _model
 
     # A retrained/rolled-back version deployed via ModelRegistry always
     # takes priority over the base HuggingFace hub checkpoint below.
