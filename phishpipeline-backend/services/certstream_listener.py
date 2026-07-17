@@ -19,7 +19,8 @@ logger = logging.getLogger(__name__)
 # "usable" Argon/Xenon/Nimbus shard if this one goes read-only.
 CT_LOG_BASE_URL = "https://ct.googleapis.com/logs/us1/argon2026h2/"
 INGEST_ENDPOINT = os.environ.get(
-    "PHISHPIPELINE_INGEST_URL", "http://localhost:8000/api/ingest-domain"
+    "PHISHPIPELINE_INGEST_URL",
+    f"http://localhost:{os.environ.get('PORT', '8000')}/api/ingest-domain",
 )
 POLL_INTERVAL_SECONDS = 10
 ENTRIES_PER_POLL = 64
