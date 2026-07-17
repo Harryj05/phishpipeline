@@ -28,6 +28,10 @@ PHISHING_KEYWORDS = [
 SUSPICIOUS_TLDS = [".xyz", ".top", ".live", ".click", ".gq", ".ml", ".cf"]
 
 
+def _env_flag(name: str) -> bool:
+    return os.environ.get(name, "").strip().lower() in {"1", "true", "yes", "on"}
+
+
 def _heuristic_classify(url: str) -> dict:
     url_lower = url.lower()
     score = 0
@@ -57,12 +61,9 @@ def _heuristic_classify(url: str) -> dict:
 def _load():
     global _tokenizer, _model
 
-    if os.environ.get("PHISHPIPELINE_FORCE_HEURISTIC_CLASSIFIER", "").strip().lower() in {
-        "1",
-        "true",
-        "yes",
-        "on",
-    }:
+    if _env_flag("PHISHPIPELINE_FORCE_HEURISTIC_CLASSIFIER") or _env_flag(
+        "PHISHPIPELINE_SKIP_MODEL_PRELOAD"
+    ):
         _tokenizer = None
         _model = "stub"
         return _tokenizer, _model
