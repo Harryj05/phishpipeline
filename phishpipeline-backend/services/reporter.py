@@ -2,6 +2,7 @@
 
 import asyncio
 import logging
+import os
 from datetime import datetime
 
 from db.database import Report, SessionLocal, URLQueue
@@ -12,7 +13,9 @@ from services.registrar_reporter import report_registrar
 
 logger = logging.getLogger(__name__)
 
-AUTO_REPORT_CONFIDENCE_THRESHOLD = 0.7
+AUTO_REPORT_CONFIDENCE_THRESHOLD = float(
+    os.environ.get("PHISHPIPELINE_AUTO_REPORT_THRESHOLD", "0.7")
+)
 
 
 async def auto_report(url: str, url_queue_id: int) -> None:
