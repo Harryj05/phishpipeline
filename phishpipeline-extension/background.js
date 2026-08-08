@@ -1,4 +1,4 @@
-const PRODUCTION_URL = "https://phishpipeline-production.up.railway.app";
+const PRODUCTION_URL = "https://phishpipeline-production-2212.up.railway.app";
 const LOCAL_URL = "http://localhost:8000";
 
 // Cache the resolved URL so popup doesn't need to re-discover it

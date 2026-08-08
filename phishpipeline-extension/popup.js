@@ -1,6 +1,6 @@
 // Try production backend first, fall back to localhost for dev.
 // The PRODUCTION_URL must match what's in manifest.json host_permissions.
-const PRODUCTION_URL = "https://phishpipeline-production.up.railway.app";
+const PRODUCTION_URL = "https://phishpipeline-production-2212.up.railway.app";
 const LOCAL_URL = "http://localhost:8000";
 
 let API_BASE = LOCAL_URL; // default until resolveApiBase() completes
